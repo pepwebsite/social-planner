@@ -156,7 +156,7 @@ export function Today() {
             </div>
             <Card className="p-1.5">
               {urgentTasks.length === 0 ? (
-                <EmptyState icon={<CheckCircle2 size={22} />} title="Niente in scadenza" text="Nei prossimi 3 giorni sei libera. 🎉" />
+                <EmptyState icon={<CheckCircle2 size={22} />} title="Niente in scadenza" text="Nei prossimi 3 giorni non scade niente. 🎉" />
               ) : (
                 urgentTasks.map((t) => <TaskRow key={t.id} task={t} />)
               )}

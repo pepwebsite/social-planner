@@ -7,6 +7,7 @@ import { todayISO } from '../lib/dates'
 import { clientPulse, isDueToday, isOverdue, needsNudge, URGENCY_META } from '../lib/insights'
 import { ClientAvatar, Kbd, cx } from './ui'
 import { SessionBar } from './SessionBar'
+import { AccountBox } from './AuthGate'
 
 const NAV = [
   { to: '/', label: 'Oggi', icon: Sun, end: true },
@@ -112,6 +113,7 @@ export function Layout() {
           {active.length === 0 && <p className="px-3 py-2 text-xs text-stone-400">Nessun cliente ancora.</p>}
         </div>
         <div className="space-y-0.5 border-t border-stone-200/70 p-3">
+          <AccountBox />
           <NavLink
             to="/impostazioni/ai"
             className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold', isActive ? 'bg-white text-stone-900 shadow-soft' : 'text-stone-500 hover:bg-stone-900/5')}

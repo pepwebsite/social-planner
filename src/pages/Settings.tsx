@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronRight, Download, Loader2, RotateCcw, Smartphone, Sparkles, Upload } from 'lucide-react'
+import { ChevronRight, Download, Loader2, LogOut, RotateCcw, Smartphone, Sparkles, Upload } from 'lucide-react'
 import { snapshot, useStore, type DataSnapshot } from '../store'
 import { useUi } from '../ui'
 import { aiStatus, type AiStatus } from '../lib/ai'
 import { providerById } from '../lib/providers'
+import { cloudEnabled } from '../lib/supabase'
+import { signOutAndClear } from '../lib/sync'
+import { displayName, useAuth } from '../auth'
+import { SyncBadge } from '../components/AuthGate'
 import { todayISO } from '../lib/dates'
 import { PageHeader } from '../components/Layout'
 import { Button, Card, cx } from '../components/ui'
@@ -18,6 +22,7 @@ export function Settings() {
     e: useStore((s) => s.events.length),
   }
   const toast = useUi((s) => s.toast)
+  const user = useAuth((s) => s.user)
   const fileRef = useRef<HTMLInputElement>(null)
   const [ai, setAi] = useState<AiStatus | null>(null)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -77,10 +82,26 @@ export function Settings() {
           </div>
         </Link>
 
+        {cloudEnabled && user && (
+          <Card className="flex flex-wrap items-center gap-3 p-5">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-stone-900 text-sm font-bold text-white">
+              {displayName(user).slice(0, 1).toUpperCase()}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-bold">{displayName(user)}</p>
+              <p className="truncate text-sm text-stone-500">{user.email}</p>
+              <SyncBadge className="mt-0.5" />
+            </div>
+            <Button variant="secondary" icon={<LogOut size={15} />} onClick={() => void signOutAndClear()}>
+              Esci
+            </Button>
+          </Card>
+        )}
+
         <Card className="p-5">
           <p className="font-bold">I tuoi dati</p>
           <p className="mt-0.5 text-sm text-stone-500">
-            I dati sono salvati in questo browser: {counts.c} clienti, {counts.p} contenuti, {counts.t} attività, {counts.e} eventi. Scarica un backup ogni tanto, e usalo per spostarti su un altro dispositivo.
+            {cloudEnabled ? 'Salvati nel tuo account e sincronizzati su tutti i tuoi dispositivi' : 'Salvati in questo browser'}: {counts.c} clienti, {counts.p} contenuti, {counts.t} attività, {counts.e} eventi. Il backup è una copia di sicurezza in più, da conservare dove vuoi.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="primary" icon={<Download size={15} />} onClick={exportData}>

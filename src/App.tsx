@@ -14,10 +14,12 @@ import { ClientWorkspace } from './pages/ClientWorkspace'
 import { Settings } from './pages/Settings'
 import { PrintPlan } from './pages/PrintPlan'
 import { Providers } from './pages/Providers'
+import { AuthGate } from './components/AuthGate'
 
 export default function App() {
   return (
     <BrowserRouter>
+      <AuthGate>
       <Routes>
         <Route path="/clienti/:id/stampa" element={<PrintPlan />} />
         <Route element={<Layout />}>
@@ -36,6 +38,7 @@ export default function App() {
       <EventEditor />
       <TaskEditor />
       <CommandPalette />
+      </AuthGate>
       <Toaster />
     </BrowserRouter>
   )
