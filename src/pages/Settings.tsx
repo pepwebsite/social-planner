@@ -53,7 +53,7 @@ export function Settings() {
       importData(data as DataSnapshot)
       toast(`Importati ${data.clients.length} clienti e ${data.posts.length} contenuti`)
     } catch {
-      toast('File non valido: usa un backup esportato da Regia', 'error')
+      toast('File non valido: usa un backup esportato da Social Planner', 'error')
     }
   }
 
@@ -170,7 +170,7 @@ export function Settings() {
           <PlayCircle size={28} className="shrink-0" />
           <span className="flex-1">
             <span className="block font-bold">Guarda il tutorial</span>
-            <span className="block text-sm text-white/80">Come funziona Regia, in un minuto</span>
+            <span className="block text-sm text-white/80">Come funziona Social Planner, in un minuto</span>
           </span>
           <ChevronRight size={18} className="text-white/70" />
         </button>

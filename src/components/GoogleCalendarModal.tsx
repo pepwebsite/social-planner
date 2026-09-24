@@ -29,7 +29,7 @@ export function GoogleCalendarModal({ onClose }: { onClose: () => void }) {
           <GoogleCalendarIcon size={22} /> Google Calendar
         </span>
       }
-      subtitle="Collega Regia al calendario del telefono, in entrambe le direzioni."
+      subtitle="Collega Social Planner al calendario del telefono, in entrambe le direzioni."
       onClose={onClose}
       width="max-w-xl"
     >
@@ -38,8 +38,8 @@ export function GoogleCalendarModal({ onClose }: { onClose: () => void }) {
         onChange={setTab}
         className="mb-5 grid w-full grid-cols-2"
         options={[
-          { value: 'esporta', label: <span className="flex items-center justify-center gap-1.5"><ArrowUpFromLine size={14} /> Regia → Google</span> },
-          { value: 'importa', label: <span className="flex items-center justify-center gap-1.5"><ArrowDownToLine size={14} /> Google → Regia</span> },
+          { value: 'esporta', label: <span className="flex items-center justify-center gap-1.5"><ArrowUpFromLine size={14} /> Social Planner → Google</span> },
+          { value: 'importa', label: <span className="flex items-center justify-center gap-1.5"><ArrowDownToLine size={14} /> Google → Social Planner</span> },
         ]}
       />
       {tab === 'esporta' ? <ExportPanel /> : <ImportPanel />}
@@ -47,7 +47,7 @@ export function GoogleCalendarModal({ onClose }: { onClose: () => void }) {
   )
 }
 
-/* ------------------------------------------------- Regia → Google / telefono ---- */
+/* ------------------------------------------------- Social Planner → Google / telefono ---- */
 
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
   return (
@@ -107,7 +107,7 @@ function ExportPanel() {
   return (
     <div className="space-y-5">
       <p className="text-sm text-stone-600">
-        I contenuti programmati, gli eventi e le attività di Regia compaiono nel tuo <b>Google Calendar</b>, e quindi anche nel calendario del telefono. Si aggiornano da soli.
+        I contenuti programmati, gli eventi e le attività di Social Planner compaiono nel tuo <b>Google Calendar</b>, e quindi anche nel calendario del telefono. Si aggiornano da soli.
       </p>
 
       {error && <p className="rounded-xl bg-rose-50 px-3 py-2.5 text-sm text-rose-700 ring-1 ring-rose-200">{error}</p>}
@@ -162,7 +162,7 @@ function dbError(message: string) {
   return 'Impossibile creare il link. Riprova tra poco.'
 }
 
-/* ----------------------------------------------------- Google → Regia ---- */
+/* ----------------------------------------------------- Google → Social Planner ---- */
 
 function ImportPanel() {
   const calendars = useStore((s) => s.externalCalendars)
@@ -192,7 +192,7 @@ function ImportPanel() {
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-stone-600">I tuoi impegni di Google Calendar (riunioni, appuntamenti, ferie) compaiono dentro il calendario di Regia, così pianifichi tenendone conto.</p>
+      <p className="text-sm text-stone-600">I tuoi impegni di Google Calendar (riunioni, appuntamenti, ferie) compaiono dentro il calendario di Social Planner, così pianifichi tenendone conto.</p>
 
       <ol className="space-y-3">
         <Step n={1}>
@@ -253,7 +253,7 @@ function ImportPanel() {
           </div>
         </div>
       )}
-      <p className="text-xs text-stone-500">Gli impegni si aggiornano ogni 10 minuti mentre usi Regia. Sono in sola lettura: per modificarli usa Google Calendar. L’indirizzo segreto resta nel tuo account.</p>
+      <p className="text-xs text-stone-500">Gli impegni si aggiornano ogni 10 minuti mentre usi Social Planner. Sono in sola lettura: per modificarli usa Google Calendar. L’indirizzo segreto resta nel tuo account.</p>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { z } from 'zod'
 
 /**
- * Endpoint AI di Regia.
+ * Endpoint AI di Social Planner.
  * - action "week": genera la bozza del piano settimanale di un cliente
  * - action "copy": scrive o riscrive il copy di un singolo contenuto
  * - action "validate": verifica una chiave e restituisce i modelli disponibili
@@ -333,7 +333,7 @@ async function postJson(url: string, apiKey: string, body: unknown) {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'X-Title': 'Regia Social Planner',
+        'X-Title': 'Social Planner',
       },
       body: JSON.stringify(body),
     })

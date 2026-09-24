@@ -4,6 +4,7 @@ import { authErrorMessage, supabase } from '../lib/supabase'
 import { useAuth } from '../auth'
 import { useUi } from '../ui'
 import { Button, Input, cx } from '../components/ui'
+import { AppLogo } from '../components/AppLogo'
 
 type Mode = 'login' | 'register' | 'forgot'
 
@@ -55,8 +56,10 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         <div className="absolute -top-24 -right-24 size-80 rounded-full bg-white/10 blur-2xl" />
         <div className="absolute -bottom-32 -left-16 size-96 rounded-full bg-fuchsia-400/20 blur-3xl" />
         <div className="relative flex items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-white/15 text-lg font-extrabold ring-1 ring-white/25">R</span>
-          <span className="text-lg font-extrabold tracking-tight">Regia</span>
+          <span className="rounded-2xl p-0.5 ring-1 ring-white/30">
+            <AppLogo size={40} />
+          </span>
+          <span className="text-lg font-extrabold tracking-tight">Social Planner</span>
         </div>
         <div className="relative">
           <h1 className="text-4xl leading-tight font-extrabold tracking-tight">Tutti i tuoi clienti,<br />sotto controllo.</h1>
@@ -79,8 +82,10 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         <div className="relative overflow-clip bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 px-6 pt-[max(28px,env(safe-area-inset-top))] pb-14 text-white lg:hidden">
           <div className="pointer-events-none absolute -top-16 -right-12 size-56 rounded-full bg-white/15 blur-2xl" />
           <div className="relative flex items-center gap-2.5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-surface text-lg font-extrabold text-brand-600 shadow-lg">R</span>
-            <span className="text-xl font-extrabold tracking-tight">Regia</span>
+            <span className="rounded-2xl p-0.5 shadow-lg ring-1 ring-white/30">
+              <AppLogo size={40} />
+            </span>
+            <span className="text-xl font-extrabold tracking-tight">Social Planner</span>
           </div>
           <p className="relative mt-6 animate-rise text-[26px] leading-tight font-extrabold tracking-tight">Tutti i tuoi clienti, sotto controllo.</p>
           <p className="relative mt-2 animate-rise text-[15px] text-white/85 [animation-delay:120ms]">Bozze con l’AI, calendari e promemoria in un’unica app.</p>
@@ -185,7 +190,7 @@ function RegisterForm({ onConfirmNeeded }: { onConfirmNeeded: (email: string) =>
     // Supabase non segnala le email già registrate: restituisce un utente senza identità
     if (data.user && data.user.identities?.length === 0) return setError('Esiste già un account con questa email. Prova ad accedere.')
     if (!data.session) onConfirmNeeded(email.trim())
-    else useUi.getState().toast(`Benvenuto in Regia${name ? `, ${name.split(' ')[0]}` : ''}!`)
+    else useUi.getState().toast(`Benvenuto in Social Planner${name ? `, ${name.split(' ')[0]}` : ''}!`)
   }
 
   return (

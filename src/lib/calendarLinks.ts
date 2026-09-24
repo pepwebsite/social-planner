@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ExternalCalendar } from '../types'
 import { useStore } from '../store'
 
-/* ---------------------------------------- Da Regia verso Google Calendar ---- */
+/* ---------------------------------------- Da Social Planner verso Google Calendar ---- */
 
 const compact = (date: string, time: string) => `${date.replaceAll('-', '')}T${time.replace(':', '')}00`
 
@@ -28,7 +28,7 @@ export function googleEventLink({ title, date, time, minutes = 30, details = '',
   return `https://calendar.google.com/calendar/render?${q.toString()}`
 }
 
-/** Indirizzo del calendario privato di Regia da aggiungere a Google Calendar / iPhone */
+/** Indirizzo del calendario privato di Social Planner da aggiungere a Google Calendar / iPhone */
 export function feedUrls(token: string) {
   const https = `${window.location.origin}/api/calendar?t=${token}`
   const webcal = https.replace(/^https?:\/\//, 'webcal://')
@@ -44,7 +44,7 @@ export function newFeedToken() {
   return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-/* ----------------------------------------- Da Google Calendar verso Regia ---- */
+/* ----------------------------------------- Da Google Calendar verso Social Planner ---- */
 
 export interface ExternalItem {
   id: string

@@ -11,6 +11,7 @@ import { AccountBox } from './AuthGate'
 import { openTutorial } from './Tutorial'
 import { ThemeToggle } from './ThemeToggle'
 import { displayName, useAuth } from '../auth'
+import { AppWordmark } from './AppLogo'
 
 const NAV = [
   { to: '/', label: 'Oggi', icon: Sun, end: true },
@@ -51,10 +52,8 @@ export function Layout() {
       {/* Sidebar desktop */}
       <aside className="no-print hidden w-64 shrink-0 flex-col border-r border-stone-200/70 bg-surface/50 md:flex">
         <div className="flex items-center gap-2.5 px-5 pt-5 pb-4">
-          <img src="/favicon.svg" alt="" className="size-8" />
           <div className="flex-1">
-            <p className="leading-none font-extrabold tracking-tight">Regia</p>
-            <p className="mt-0.5 text-[11px] font-medium text-stone-400">Social planner</p>
+            <AppWordmark size={30} />
           </div>
           <ThemeToggle size="sm" />
         </div>
@@ -138,8 +137,7 @@ export function Layout() {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Header mobile */}
         <header className="no-print sticky top-0 z-20 flex items-center gap-1 border-b border-stone-200/70 bg-surface/85 px-4 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 backdrop-blur-lg md:hidden">
-          <img src="/favicon.svg" alt="" className="size-7" />
-          <p className="flex-1 font-extrabold tracking-tight">Regia</p>
+          <AppWordmark size={28} className="flex-1" />
           <ThemeToggle size="sm" className="mr-1" />
           <button type="button" aria-label="Cerca" onClick={() => setPalette(true)} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5">
             <Search size={20} />
@@ -154,7 +152,9 @@ export function Layout() {
 
         <main ref={mainRef} className="relative flex-1 overflow-y-auto pb-24 md:pb-0">
           <SessionBar />
-          <Outlet />
+          <div key={location.pathname} className="animate-page">
+            <Outlet />
+          </div>
         </main>
 
         {/* Tab bar mobile con pulsante + centrale */}

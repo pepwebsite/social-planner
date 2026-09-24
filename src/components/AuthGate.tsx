@@ -5,11 +5,13 @@ import { signOutAndClear, startSync, useSync } from '../lib/sync'
 import { displayName, useAuth } from '../auth'
 import { AuthScreen, ResetPassword } from '../pages/AuthScreen'
 import { Button, cx } from './ui'
+import { AppLogo } from './AppLogo'
+import { hideSplash } from '../lib/splash'
 
 function Splash({ text }: { text: string }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4">
-      <img src="/favicon.svg" alt="" className="size-12 animate-pulse" />
+      <AppLogo size={48} className="animate-pulse" />
       <p className="flex items-center gap-2 text-sm font-medium text-stone-500">
         <Loader2 size={15} className="animate-spin" /> {text}
       </p>
@@ -37,6 +39,12 @@ export function AuthGate({ children }: { children: ReactNode }) {
       cancelled = true
     }
   }, [userId, attempt])
+
+  // La schermata di apertura si chiude quando c'è qualcosa di definitivo da mostrare
+  const settled = !cloudEnabled || status === 'signedOut' || Boolean(error) || (recovery && status === 'signedIn') || (status === 'signedIn' && ready === userId)
+  useEffect(() => {
+    if (settled) hideSplash()
+  }, [settled])
 
   if (!cloudEnabled) return <>{children}</>
   if (recovery && status === 'signedIn') return <ResetPassword />

@@ -74,7 +74,7 @@ export function Providers() {
         </div>
 
         <p className="px-1 text-xs leading-relaxed text-stone-500">
-          Le chiavi restano in questo browser e non entrano nel backup. Quando generi una bozza, la chiave passa dal server di Regia solo per inoltrare la richiesta al provider e non viene salvata. I piani gratuiti hanno limiti di utilizzo e condizioni che possono cambiare: in caso di “limite raggiunto” passa a un altro provider collegato.
+          Le chiavi restano in questo browser e non entrano nel backup. Quando generi una bozza, la chiave passa dal server di Social Planner solo per inoltrare la richiesta al provider e non viene salvata. I piani gratuiti hanno limiti di utilizzo e condizioni che possono cambiare: in caso di “limite raggiunto” passa a un altro provider collegato.
         </p>
       </div>
     </div>

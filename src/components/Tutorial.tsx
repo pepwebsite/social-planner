@@ -3,6 +3,7 @@ import { create } from 'zustand'
 import { Bell, Check, ChevronLeft, ChevronRight, MessageCircle, Pause, Play, Share, Smartphone, Sparkles, X } from 'lucide-react'
 import { useStore } from '../store'
 import { cx } from './ui'
+import { AppLogo } from './AppLogo'
 
 /**
  * Tutorial animato "come un video": scene a tempo in stile storie di Instagram.
@@ -92,7 +93,7 @@ interface Scene {
 const SCENES: Scene[] = [
   {
     bg: 'from-brand-600 via-violet-600 to-fuchsia-600',
-    title: 'Benvenuto in Regia',
+    title: 'Benvenuto in Social Planner',
     text: 'Il tuo centro di controllo per gestire tanti clienti social senza impazzire. Vediamo come funziona in un minuto.',
     art: () => (
       <div className="relative mx-auto flex size-56 items-center justify-center">
@@ -108,7 +109,9 @@ const SCENES: Scene[] = [
             </span>
           </span>
         ))}
-        <span className="flex size-24 animate-pop items-center justify-center rounded-[28px] bg-surface text-5xl font-extrabold text-brand-600 shadow-2xl">R</span>
+        <span className="animate-pop rounded-[28px] shadow-2xl ring-4 ring-white/30">
+          <AppLogo size={96} className="rounded-[28px]" />
+        </span>
       </div>
     ),
   },
@@ -265,8 +268,8 @@ const SCENES: Scene[] = [
         <span className="absolute top-6 right-6 flex animate-pop items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-bold text-stone-800 shadow-lg" style={d(700)}>
           <Share size={13} /> Aggiungi a Home
         </span>
-        <span className="absolute bottom-8 left-4 flex size-14 animate-pop items-center justify-center rounded-2xl bg-surface text-2xl font-extrabold text-brand-600 shadow-xl" style={d(1300)}>
-          R
+        <span className="absolute bottom-8 left-4 animate-pop rounded-2xl shadow-xl" style={d(1300)}>
+          <AppLogo size={56} />
         </span>
       </div>
     ),
@@ -385,8 +388,8 @@ function Player() {
           ))}
         </div>
         <div className="relative flex items-center gap-2 px-4 pt-3">
-          <span className="flex size-8 items-center justify-center rounded-xl bg-surface text-sm font-extrabold text-brand-600">R</span>
-          <span className="text-sm font-bold">Come funziona Regia</span>
+          <AppLogo size={32} />
+          <span className="text-sm font-bold">Come funziona Social Planner</span>
           <span className="text-xs text-white/70">
             {i + 1}/{SCENES.length}
           </span>
@@ -416,7 +419,7 @@ function Player() {
         <div className="relative flex items-center gap-2 px-4 pb-[max(18px,env(safe-area-inset-bottom))]">
           {last ? (
             <button type="button" onClick={close} className="h-13 flex-1 animate-pop rounded-2xl bg-surface py-3.5 text-[15px] font-bold text-stone-900 shadow-lg active:scale-[0.98]">
-              Inizia a usare Regia
+              Inizia a usare Social Planner
             </button>
           ) : (
             <>

@@ -1,4 +1,4 @@
-# Regia · Social planner
+# Social Planner · Social planner
 
 Web app per social media manager che seguono molti clienti: ti dice su chi lavorare adesso, tiene la scheda di ogni cliente sempre a portata di mano, prepara con l'AI le bozze della settimana e ricorda al posto tuo volantini, materiali degli influencer e approvazioni da sollecitare.
 

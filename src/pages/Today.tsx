@@ -332,7 +332,7 @@ function Welcome({ name }: { name: string | null }) {
     <div className="mx-auto flex min-h-full max-w-3xl flex-col justify-center px-5 py-8 md:px-6 md:py-12">
       <p className="text-4xl">{g.emoji}</p>
       <h1 className="mt-3 animate-rise text-3xl font-extrabold tracking-tight md:text-4xl">
-        {name ? `Benvenuto in Regia, ${name}!` : 'Benvenuto in Regia!'}
+        {name ? `Benvenuto in Social Planner, ${name}!` : 'Benvenuto in Social Planner!'}
       </h1>
       <p className="mt-3 max-w-xl animate-rise text-lg text-stone-500 [animation-delay:120ms]">Tutti i tuoi clienti sotto controllo, in tre passi.</p>
 

@@ -126,12 +126,12 @@ export function buildIcs(feed: Feed, appUrl: string) {
   const lines: string[] = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Regia//Social planner//IT',
+    'PRODID:-//Social Planner//IT',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
-    'X-WR-CALNAME:Regia · Piano social',
+    'X-WR-CALNAME:Social Planner · Piano social',
     `X-WR-TIMEZONE:${TZ}`,
-    'X-WR-CALDESC:Contenuti\\, eventi e promemoria da Regia',
+    'X-WR-CALDESC:Contenuti\\, eventi e promemoria da Social Planner',
     'REFRESH-INTERVAL;VALUE=DURATION:PT1H',
     'X-PUBLISHED-TTL:PT1H',
   ]
@@ -147,8 +147,8 @@ export function buildIcs(feed: Feed, appUrl: string) {
       `DTSTART:${utcStamp(start)}`,
       `DTEND:${utcStamp(start + 30 * 60_000)}`,
       `SUMMARY:${escapeText(`${st.icon} ${clientName(p.clientId)} · ${what}${p.title ? `: ${p.title}` : ''}`)}`,
-      `DESCRIPTION:${escapeText(`Stato: ${st.label}\n${what}\n\nApri in Regia: ${appUrl}`)}`,
-      `CATEGORIES:${escapeText(clientName(p.clientId) || 'Regia')}`,
+      `DESCRIPTION:${escapeText(`Stato: ${st.label}\n${what}\n\nApri in Social Planner: ${appUrl}`)}`,
+      `CATEGORIES:${escapeText(clientName(p.clientId) || 'Social Planner')}`,
       `URL:${appUrl}`,
     ])
   }

@@ -1,6 +1,6 @@
 {
-  "name": "Regia · Social planner",
-  "short_name": "Regia",
+  "name": "Social Planner",
+  "short_name": "Social Planner",
   "description": "Centro di controllo per social media manager: clienti, calendari, approvazioni e promemoria.",
   "start_url": "/",
   "display": "standalone",
