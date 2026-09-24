@@ -35,7 +35,7 @@ function apply() {
   root.dataset.theme = dark ? 'dark' : 'light'
   if (cvd === 'none') delete root.dataset.cvd
   else root.dataset.cvd = cvd
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#121110' : '#4f46e5')
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#121110' : '#a855f7')
 }
 
 apply()
