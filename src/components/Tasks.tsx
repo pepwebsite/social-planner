@@ -6,6 +6,7 @@ import { useUi } from '../ui'
 import { RECURRENCE_LABEL, WAITING_META } from '../lib/meta'
 import { relativeDay, todayISO } from '../lib/dates'
 import { isOverdue } from '../lib/insights'
+import { cheer } from '../lib/mood'
 import { Button, ClientAvatar, Field, Input, Modal, Select, Textarea, cx } from './ui'
 
 export function TaskRow({ task, showClient = true }: { task: Task; showClient?: boolean }) {
@@ -23,7 +24,7 @@ export function TaskRow({ task, showClient = true }: { task: Task; showClient?: 
         onClick={() => {
           toggleTask(task.id)
           if (!task.done) {
-            toast(task.recurrence !== 'none' ? 'Fatto! Ho già creato la prossima' : 'Fatto!', 'ok', {
+            toast(task.recurrence !== 'none' ? `${cheer()} Ho già preparato la prossima` : cheer(), 'ok', {
               label: 'Annulla',
               run: () => useStore.getState().toggleTask(task.id),
             })

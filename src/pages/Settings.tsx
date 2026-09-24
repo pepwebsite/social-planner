@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronRight, Download, Loader2, LogOut, RotateCcw, Smartphone, Sparkles, Upload } from 'lucide-react'
+import { ChevronRight, Download, Loader2, LogOut, PlayCircle, RotateCcw, Smartphone, Sparkles, Upload } from 'lucide-react'
 import { snapshot, useStore, type DataSnapshot } from '../store'
 import { useUi } from '../ui'
 import { aiStatus, type AiStatus } from '../lib/ai'
@@ -9,6 +9,7 @@ import { cloudEnabled } from '../lib/supabase'
 import { signOutAndClear } from '../lib/sync'
 import { displayName, useAuth } from '../auth'
 import { SyncBadge } from '../components/AuthGate'
+import { openTutorial } from '../components/Tutorial'
 import { todayISO } from '../lib/dates'
 import { PageHeader } from '../components/Layout'
 import { Button, Card, cx } from '../components/ui'
@@ -136,7 +137,20 @@ export function Settings() {
           </div>
         </Card>
 
-        <Card className="p-5">
+        <button
+          type="button"
+          onClick={openTutorial}
+          className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 p-5 text-left text-white shadow-soft transition active:scale-[0.99]"
+        >
+          <PlayCircle size={28} className="shrink-0" />
+          <span className="flex-1">
+            <span className="block font-bold">Guarda il tutorial</span>
+            <span className="block text-sm text-white/80">Come funziona Regia, in un minuto</span>
+          </span>
+          <ChevronRight size={18} className="text-white/70" />
+        </button>
+
+        <Card className="hidden p-5 md:block">
           <p className="font-bold">Scorciatoie</p>
           <ul className="mt-2 space-y-1 text-sm text-stone-600">
             <li>

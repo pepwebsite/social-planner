@@ -15,6 +15,7 @@ import { Settings } from './pages/Settings'
 import { PrintPlan } from './pages/PrintPlan'
 import { Providers } from './pages/Providers'
 import { AuthGate } from './components/AuthGate'
+import { Tutorial } from './components/Tutorial'
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
       <EventEditor />
       <TaskEditor />
       <CommandPalette />
+      <Tutorial />
       </AuthGate>
       <Toaster />
     </BrowserRouter>

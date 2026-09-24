@@ -51,7 +51,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
   ]
   return (
     <div className="flex min-h-full">
-      <div className="relative hidden w-[44%] flex-col justify-between overflow-hidden bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 p-10 text-white lg:flex">
+      <div className="relative hidden w-[44%] flex-col justify-between overflow-clip bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 p-10 text-white lg:flex">
         <div className="absolute -top-24 -right-24 size-80 rounded-full bg-white/10 blur-2xl" />
         <div className="absolute -bottom-32 -left-16 size-96 rounded-full bg-fuchsia-400/20 blur-3xl" />
         <div className="relative flex items-center gap-3">
@@ -74,13 +74,19 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         <p className="relative text-sm text-white/60">I tuoi dati sono salvati in modo sicuro e sincronizzati su tutti i tuoi dispositivi.</p>
       </div>
 
-      <div className="flex flex-1 items-center justify-center px-5 py-10">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <img src="/favicon.svg" alt="" className="size-9" />
+      <div className="flex flex-1 flex-col lg:items-center lg:justify-center">
+        {/* Intestazione su telefono */}
+        <div className="relative overflow-clip bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 px-6 pt-[max(28px,env(safe-area-inset-top))] pb-14 text-white lg:hidden">
+          <div className="pointer-events-none absolute -top-16 -right-12 size-56 rounded-full bg-white/15 blur-2xl" />
+          <div className="relative flex items-center gap-2.5">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-white text-lg font-extrabold text-brand-600 shadow-lg">R</span>
             <span className="text-xl font-extrabold tracking-tight">Regia</span>
           </div>
-          {children}
+          <p className="relative mt-6 animate-rise text-[26px] leading-tight font-extrabold tracking-tight">Tutti i tuoi clienti, sotto controllo.</p>
+          <p className="relative mt-2 animate-rise text-[15px] text-white/85 [animation-delay:120ms]">Bozze con l’AI, calendari e promemoria in un’unica app.</p>
+        </div>
+        <div className="relative -mt-8 flex flex-1 justify-center rounded-t-[28px] bg-canvas px-5 pt-7 pb-10 lg:mt-0 lg:flex-none lg:rounded-none lg:bg-transparent lg:p-0">
+          <div className="w-full max-w-sm">{children}</div>
         </div>
       </div>
     </div>

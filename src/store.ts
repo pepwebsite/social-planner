@@ -25,6 +25,7 @@ export interface DataSnapshot {
 interface State extends DataSnapshot {
   session: Session | null
   onboarded: boolean
+  tutorialSeen: boolean
 
   addClient: (c?: Partial<Client>) => string
   updateClient: (id: string, patch: Partial<Client>) => void
@@ -145,6 +146,7 @@ export const useStore = create<State>()(
       ...empty,
       session: null,
       onboarded: false,
+      tutorialSeen: false,
 
       addClient: (c) => {
         const client = newClient(c, get().clients.length)
@@ -275,7 +277,7 @@ export const useStore = create<State>()(
           onboarded: true,
         }),
       loadDemo: () => set({ ...demoData(), session: null, onboarded: true }),
-      resetAll: () => set({ ...empty, session: null, onboarded: false }),
+      resetAll: () => set({ ...empty, session: null, onboarded: false, tutorialSeen: false }),
       setOnboarded: () => set({ onboarded: true }),
     }),
     { name: 'regia-data', version: 1 },

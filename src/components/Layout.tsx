@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { Sparkles, CalendarDays, CalendarPlus, CheckSquare, KanbanSquare, ListTodo, PenSquare, Plus, Search, Settings, Sun, Users } from 'lucide-react'
+import { CircleHelp, UserPlus, Sparkles, CalendarDays, CalendarPlus, CheckSquare, KanbanSquare, ListTodo, PenSquare, Plus, Search, Settings, Sun, Users } from 'lucide-react'
 import { useStore } from '../store'
 import { useUi } from '../ui'
 import { todayISO } from '../lib/dates'
@@ -8,6 +8,8 @@ import { clientPulse, isDueToday, isOverdue, needsNudge, URGENCY_META } from '..
 import { ClientAvatar, Kbd, cx } from './ui'
 import { SessionBar } from './SessionBar'
 import { AccountBox } from './AuthGate'
+import { openTutorial } from './Tutorial'
+import { displayName, useAuth } from '../auth'
 
 const NAV = [
   { to: '/', label: 'Oggi', icon: Sun, end: true },
@@ -35,6 +37,7 @@ export function Layout() {
   const badges = useBadges()
   const location = useLocation()
   const mainRef = useRef<HTMLElement>(null)
+  const [sheet, setSheet] = useState(false)
 
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 })
@@ -132,14 +135,17 @@ export function Layout() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Header mobile */}
-        <header className="no-print flex items-center gap-2 border-b border-stone-200/70 bg-white/80 px-4 py-2.5 backdrop-blur md:hidden">
+        <header className="no-print sticky top-0 z-20 flex items-center gap-1 border-b border-stone-200/70 bg-white/85 px-4 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 backdrop-blur-lg md:hidden">
           <img src="/favicon.svg" alt="" className="size-7" />
           <p className="flex-1 font-extrabold tracking-tight">Regia</p>
-          <button type="button" aria-label="Cerca" onClick={() => setPalette(true)} className="rounded-xl p-2 text-stone-500 hover:bg-stone-900/5">
-            <Search size={19} />
+          <button type="button" aria-label="Cerca" onClick={() => setPalette(true)} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5">
+            <Search size={20} />
           </button>
-          <NavLink to="/impostazioni" aria-label="Impostazioni" className="rounded-xl p-2 text-stone-500 hover:bg-stone-900/5">
-            <Settings size={19} />
+          <button type="button" aria-label="Guarda il tutorial" onClick={openTutorial} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5">
+            <CircleHelp size={20} />
+          </button>
+          <NavLink to="/impostazioni" aria-label="Impostazioni e account" className="ml-0.5">
+            <HeaderAvatar />
           </NavLink>
         </header>
 
@@ -148,23 +154,116 @@ export function Layout() {
           <Outlet />
         </main>
 
-        {/* Tab bar mobile */}
-        <nav className="no-print pb-safe fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-stone-200/70 bg-white/95 backdrop-blur md:hidden">
-          {NAV.map((n) => (
-            <NavLink
-              key={n.to}
-              to={n.to}
-              end={n.end}
-              className={({ isActive }) => cx('relative flex flex-col items-center gap-0.5 py-2 text-[10px] font-semibold', isActive ? 'text-brand-600' : 'text-stone-400')}
-            >
-              <n.icon size={21} />
-              {n.label}
-              {badges[n.to] > 0 && (
-                <span className="absolute top-1 left-1/2 ml-2 rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white">{badges[n.to]}</span>
-              )}
-            </NavLink>
-          ))}
+        {/* Tab bar mobile con pulsante + centrale */}
+        <nav className="no-print pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-stone-200/70 bg-white/95 backdrop-blur-lg md:hidden">
+          <div className="grid grid-cols-5 items-end">
+            {MOBILE_NAV.slice(0, 2).map((n) => (
+              <MobileTab key={n.to} n={n} badge={badges[n.to]} />
+            ))}
+            <div className="flex justify-center">
+              <button
+                type="button"
+                aria-label="Crea nuovo"
+                onClick={() => setSheet(true)}
+                className="-mt-6 mb-1.5 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-600 text-white shadow-lg shadow-brand-600/30 ring-4 ring-white transition active:scale-95"
+              >
+                <Plus size={26} strokeWidth={2.5} />
+              </button>
+            </div>
+            {MOBILE_NAV.slice(2).map((n) => (
+              <MobileTab key={n.to} n={n} badge={badges[n.to]} />
+            ))}
+          </div>
         </nav>
+        {sheet && <CreateSheet onClose={() => setSheet(false)} />}
+      </div>
+    </div>
+  )
+}
+
+const MOBILE_NAV = [
+  { to: '/', label: 'Oggi', icon: Sun, end: true },
+  { to: '/calendario', label: 'Calendario', icon: CalendarDays },
+  { to: '/approvazioni', label: 'Approvaz.', icon: KanbanSquare },
+  { to: '/clienti', label: 'Clienti', icon: Users, end: false },
+]
+
+function MobileTab({ n, badge }: { n: (typeof MOBILE_NAV)[number]; badge?: number }) {
+  return (
+    <NavLink
+      to={n.to}
+      end={n.end}
+      className={({ isActive }) => cx('relative flex flex-col items-center gap-1 pt-2.5 pb-2 text-[11px] font-semibold transition', isActive ? 'text-brand-600' : 'text-stone-400')}
+    >
+      {({ isActive }) => (
+        <>
+          <span className={cx('flex h-7 w-12 items-center justify-center rounded-full transition', isActive && 'bg-brand-50')}>
+            <n.icon size={21} strokeWidth={isActive ? 2.4 : 2} />
+          </span>
+          {n.label}
+          {badge ? <span className="absolute top-1.5 left-1/2 ml-2.5 min-w-4 rounded-full bg-rose-500 px-1 text-center text-[10px] leading-4 font-bold text-white ring-2 ring-white">{badge}</span> : null}
+        </>
+      )}
+    </NavLink>
+  )
+}
+
+function HeaderAvatar() {
+  const user = useAuth((st) => st.user)
+  const name = user ? displayName(user) : null
+  return name ? (
+    <span className="flex size-9 items-center justify-center rounded-full bg-stone-900 text-xs font-bold text-white">{name.slice(0, 1).toUpperCase()}</span>
+  ) : (
+    <span className="flex size-9 items-center justify-center rounded-xl text-stone-500">
+      <Settings size={20} />
+    </span>
+  )
+}
+
+/** Foglio dal basso per creare velocemente (mobile) */
+function CreateSheet({ onClose }: { onClose: () => void }) {
+  const clients = useStore((st) => st.clients)
+  const nav = useNavigate()
+  const ui = useUi.getState()
+  const cid = clients.find((c) => !c.archived)?.id
+  const items = [
+    { label: 'Contenuto', text: 'Post, reel, story…', icon: PenSquare, cls: 'bg-brand-50 text-brand-600', run: () => (cid ? ui.newPost({ clientId: cid, date: todayISO() }) : nav('/clienti?nuovo=1')) },
+    { label: 'Attività', text: 'Promemoria, anche ricorrente', icon: CheckSquare, cls: 'bg-emerald-50 text-emerald-600', run: () => ui.openTask({}) },
+    { label: 'Evento', text: 'Con influencer e materiali', icon: CalendarPlus, cls: 'bg-pink-50 text-pink-600', run: () => ui.openEvent({}) },
+    { label: 'Cliente', text: 'Nuova scheda cliente', icon: UserPlus, cls: 'bg-amber-50 text-amber-600', run: () => nav('/clienti?nuovo=1') },
+  ]
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [onClose])
+  return (
+    <div className="fixed inset-0 z-50 flex items-end md:hidden">
+      <div className="absolute inset-0 animate-in bg-stone-900/40" onClick={onClose} />
+      <div className="pb-safe relative w-full animate-rise rounded-t-3xl bg-white px-4 pt-3 shadow-lift">
+        <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-stone-200" />
+        <p className="px-1 pb-2 text-lg font-extrabold tracking-tight">Cosa vuoi creare?</p>
+        <div className="grid grid-cols-2 gap-2.5 pb-4">
+          {items.map((i) => (
+            <button
+              key={i.label}
+              type="button"
+              onClick={() => {
+                onClose()
+                i.run()
+              }}
+              className="flex flex-col items-start gap-2 rounded-2xl bg-stone-50 p-3.5 text-left ring-1 ring-stone-900/5 transition active:scale-[0.97]"
+            >
+              <span className={cx('flex size-10 items-center justify-center rounded-xl', i.cls)}>
+                <i.icon size={20} />
+              </span>
+              <span>
+                <span className="block font-bold">{i.label}</span>
+                <span className="block text-xs text-stone-500">{i.text}</span>
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )

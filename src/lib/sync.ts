@@ -55,7 +55,7 @@ interface RemoteRow {
 function localPayload() {
   const { entries, activeId } = useAi.getState()
   return {
-    data: { ...snapshot(), onboarded: useStore.getState().onboarded },
+    data: { ...snapshot(), onboarded: useStore.getState().onboarded, tutorialSeen: useStore.getState().tutorialSeen },
     ai: { entries, activeId },
   }
 }
@@ -70,6 +70,7 @@ function applyRemote(row: RemoteRow) {
     tasks: (d.tasks as never) ?? [],
     lastWorked: (d.lastWorked as never) ?? {},
     onboarded: Boolean(d.onboarded),
+    tutorialSeen: Boolean(d.tutorialSeen),
     session: null,
   })
   const ai = (row.ai ?? {}) as Record<string, unknown>
