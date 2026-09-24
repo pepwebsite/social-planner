@@ -1,5 +1,5 @@
 // Service worker minimale: rende l'app installabile e utilizzabile offline (shell in cache).
-const CACHE = 'regia-v1'
+const CACHE = 'social-planner-v2'
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(['/', '/favicon.svg', '/manifest.webmanifest'])))
   self.skipWaiting()
