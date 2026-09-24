@@ -8,10 +8,10 @@ export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Bool
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'ai'
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-brand-600 text-white hover:bg-brand-700 shadow-sm shadow-brand-600/20',
-  secondary: 'bg-white text-stone-800 ring-1 ring-stone-200 hover:bg-stone-50 hover:ring-stone-300',
+  primary: 'bg-brand-600 text-white hover:brightness-110 shadow-sm shadow-brand-600/20',
+  secondary: 'bg-surface text-stone-800 ring-1 ring-stone-200 hover:bg-stone-50 hover:ring-stone-300',
   ghost: 'text-stone-600 hover:bg-stone-900/5 hover:text-stone-900',
-  danger: 'bg-white text-rose-600 ring-1 ring-rose-200 hover:bg-rose-50',
+  danger: 'bg-surface text-rose-600 ring-1 ring-rose-200 hover:bg-rose-50',
   ai: 'bg-gradient-to-r from-violet-600 to-brand-600 text-white hover:brightness-110 shadow-sm shadow-violet-600/25',
 }
 
@@ -63,7 +63,7 @@ export function IconButton({
 }
 
 const fieldCls =
-  'w-full rounded-xl border-0 bg-white px-3 py-2 text-sm text-stone-900 ring-1 ring-stone-200 transition placeholder:text-stone-400 hover:ring-stone-300 focus:ring-2 focus:ring-brand-500 focus:outline-none'
+  'w-full rounded-xl border-0 bg-surface px-3 py-2 text-sm text-stone-900 ring-1 ring-stone-200 transition placeholder:text-stone-400 hover:ring-stone-300 focus:ring-2 focus:ring-brand-500 focus:outline-none'
 
 export const Input = ({ className, ...rest }: InputHTMLAttributes<HTMLInputElement>) => (
   <input {...rest} className={cx(fieldCls, 'h-10', className)} />
@@ -132,7 +132,7 @@ export function ClientAvatar({ client, size = 'md' }: { client: Pick<Client, 'na
 }
 
 export function Card({ className, children }: { className?: string; children: ReactNode }) {
-  return <div className={cx('rounded-2xl bg-white shadow-soft ring-1 ring-stone-900/5', className)}>{children}</div>
+  return <div className={cx('rounded-2xl bg-surface shadow-soft ring-1 ring-stone-900/5', className)}>{children}</div>
 }
 
 export function EmptyState({ icon, title, text, action }: { icon: ReactNode; title: string; text?: string; action?: ReactNode }) {
@@ -172,7 +172,7 @@ export function Modal({
   useEscape(onClose)
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
-      <div className="absolute inset-0 animate-in bg-stone-900/40 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="absolute inset-0 animate-in bg-black/45 backdrop-blur-[2px]" onClick={onClose} />
       <div
         role="dialog"
         aria-modal="true"
@@ -205,7 +205,7 @@ export function Drawer({ onClose, children }: { onClose: () => void; children: R
   useEscape(onClose)
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
-      <div className="absolute inset-0 animate-in bg-stone-900/30" onClick={onClose} />
+      <div className="absolute inset-0 animate-in bg-black/35" onClick={onClose} />
       <aside className="relative flex h-full w-full max-w-xl animate-slide flex-col bg-canvas shadow-lift">{children}</aside>
     </div>
   )
@@ -231,7 +231,7 @@ export function Segmented<T extends string>({
           onClick={() => onChange(o.value)}
           className={cx(
             'rounded-lg px-3 py-1.5 text-[13px] font-semibold transition',
-            value === o.value ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800',
+            value === o.value ? 'bg-surface text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800',
           )}
         >
           {o.label}
@@ -242,5 +242,5 @@ export function Segmented<T extends string>({
 }
 
 export const Kbd = ({ children }: { children: ReactNode }) => (
-  <kbd className="rounded-md bg-white px-1.5 py-0.5 font-sans text-[11px] font-semibold text-stone-500 ring-1 ring-stone-200">{children}</kbd>
+  <kbd className="rounded-md bg-surface px-1.5 py-0.5 font-sans text-[11px] font-semibold text-stone-500 ring-1 ring-stone-200">{children}</kbd>
 )

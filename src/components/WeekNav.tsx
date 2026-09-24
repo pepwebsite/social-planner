@@ -6,7 +6,7 @@ import { IconButton } from './ui'
 export function WeekNav({ start, onChange }: { start: Date; onChange: (d: Date) => void }) {
   const isCurrent = weekStart(new Date()).getTime() === start.getTime()
   return (
-    <div className="flex items-center gap-1 rounded-xl bg-white p-1 shadow-soft ring-1 ring-stone-900/5">
+    <div className="flex items-center gap-1 rounded-xl bg-surface p-1 shadow-soft ring-1 ring-stone-900/5">
       <IconButton label="Settimana precedente" className="size-8" onClick={() => onChange(addDays(start, -7))}>
         <ChevronLeft size={17} />
       </IconButton>

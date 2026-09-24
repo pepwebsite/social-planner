@@ -11,7 +11,7 @@ export function Toaster() {
         <div
           key={t.id}
           role="status"
-          className="pointer-events-auto flex max-w-md animate-pop items-center gap-3 rounded-2xl bg-stone-900 py-2.5 pr-2 pl-3.5 text-sm text-white shadow-lift"
+          className="pointer-events-auto flex max-w-md animate-pop items-center gap-3 rounded-2xl bg-chip py-2.5 pr-2 pl-3.5 text-sm text-white shadow-lift"
         >
           {t.tone === 'ok' && <CheckCircle2 size={17} className="shrink-0 text-emerald-400" />}
           {t.tone === 'error' && <TriangleAlert size={17} className="shrink-0 text-rose-400" />}

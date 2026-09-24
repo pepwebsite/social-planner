@@ -26,7 +26,7 @@ export function AuthScreen() {
                 key={m}
                 type="button"
                 onClick={() => setMode(m)}
-                className={cx('rounded-lg py-2 text-sm font-semibold transition', mode === m ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800')}
+                className={cx('rounded-lg py-2 text-sm font-semibold transition', mode === m ? 'bg-surface text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800')}
               >
                 {m === 'login' ? 'Accedi' : 'Registrati'}
               </button>
@@ -79,7 +79,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         <div className="relative overflow-clip bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 px-6 pt-[max(28px,env(safe-area-inset-top))] pb-14 text-white lg:hidden">
           <div className="pointer-events-none absolute -top-16 -right-12 size-56 rounded-full bg-white/15 blur-2xl" />
           <div className="relative flex items-center gap-2.5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-white text-lg font-extrabold text-brand-600 shadow-lg">R</span>
+            <span className="flex size-10 items-center justify-center rounded-xl bg-surface text-lg font-extrabold text-brand-600 shadow-lg">R</span>
             <span className="text-xl font-extrabold tracking-tight">Regia</span>
           </div>
           <p className="relative mt-6 animate-rise text-[26px] leading-tight font-extrabold tracking-tight">Tutti i tuoi clienti, sotto controllo.</p>

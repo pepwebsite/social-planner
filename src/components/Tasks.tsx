@@ -32,7 +32,7 @@ export function TaskRow({ task, showClient = true }: { task: Task; showClient?: 
         }}
         className={cx(
           'flex size-5 shrink-0 items-center justify-center rounded-md transition',
-          task.done ? 'bg-emerald-500 text-white' : 'bg-white hover:bg-brand-50',
+          task.done ? 'bg-emerald-500 text-white' : 'bg-surface hover:bg-brand-50',
         )}
         style={{ boxShadow: task.done ? undefined : 'inset 0 0 0 1.5px rgb(214 211 209)' }}
       >

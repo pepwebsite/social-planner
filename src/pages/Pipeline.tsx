@@ -95,7 +95,7 @@ export function Pipeline() {
               <div className="flex items-center gap-2 px-2 pt-1 pb-2.5">
                 <span className={cx('size-2 rounded-full', meta.dot)} />
                 <p className="text-sm font-bold">{meta.label}</p>
-                <span className="rounded-full bg-white px-1.5 text-xs font-semibold text-stone-500 ring-1 ring-stone-200">{col.length}</span>
+                <span className="rounded-full bg-surface px-1.5 text-xs font-semibold text-stone-500 ring-1 ring-stone-200">{col.length}</span>
               </div>
               <p className="-mt-1.5 px-2 pb-2 text-xs text-stone-400">{meta.hint}</p>
               <div className="flex-1 space-y-2">

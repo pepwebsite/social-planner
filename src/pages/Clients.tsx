@@ -52,7 +52,7 @@ export function Clients() {
           const p = clientPulse(c, posts, tasks, events)
           const missingBrief = !c.tone.trim() || c.slots.length === 0
           return (
-            <button key={c.id} type="button" onClick={() => nav(`/clienti/${c.id}`)} className="group rounded-2xl bg-white p-4 text-left shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-0.5 hover:shadow-lift">
+            <button key={c.id} type="button" onClick={() => nav(`/clienti/${c.id}`)} className="group rounded-2xl bg-surface p-4 text-left shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-0.5 hover:shadow-lift">
               <div className="flex items-start gap-3">
                 <ClientAvatar client={c} size="lg" />
                 <div className="min-w-0 flex-1">
@@ -153,7 +153,7 @@ function NewClientModal({ onClose }: { onClose: () => void }) {
                   key={p}
                   type="button"
                   onClick={() => setPlatforms((ps) => (on ? ps.filter((x) => x !== p) : [...ps, p]))}
-                  className={cx('inline-flex items-center gap-1.5 rounded-full py-1 pr-3 pl-1 text-sm font-medium ring-1 transition', on ? 'bg-white shadow-soft ring-stone-300' : 'text-stone-400 ring-stone-200')}
+                  className={cx('inline-flex items-center gap-1.5 rounded-full py-1 pr-3 pl-1 text-sm font-medium ring-1 transition', on ? 'bg-surface shadow-soft ring-stone-300' : 'text-stone-400 ring-stone-200')}
                 >
                   <PlatformBadge platform={p} className={cx(!on && 'opacity-30')} /> {p[0].toUpperCase() + p.slice(1)}
                 </button>

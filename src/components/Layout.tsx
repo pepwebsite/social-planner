@@ -9,6 +9,7 @@ import { ClientAvatar, Kbd, cx } from './ui'
 import { SessionBar } from './SessionBar'
 import { AccountBox } from './AuthGate'
 import { openTutorial } from './Tutorial'
+import { ThemeToggle } from './ThemeToggle'
 import { displayName, useAuth } from '../auth'
 
 const NAV = [
@@ -48,19 +49,20 @@ export function Layout() {
   return (
     <div className="flex h-full">
       {/* Sidebar desktop */}
-      <aside className="no-print hidden w-64 shrink-0 flex-col border-r border-stone-200/70 bg-white/50 md:flex">
+      <aside className="no-print hidden w-64 shrink-0 flex-col border-r border-stone-200/70 bg-surface/50 md:flex">
         <div className="flex items-center gap-2.5 px-5 pt-5 pb-4">
           <img src="/favicon.svg" alt="" className="size-8" />
-          <div>
+          <div className="flex-1">
             <p className="leading-none font-extrabold tracking-tight">Regia</p>
             <p className="mt-0.5 text-[11px] font-medium text-stone-400">Social planner</p>
           </div>
+          <ThemeToggle size="sm" />
         </div>
         <div className="px-3">
           <button
             type="button"
             onClick={() => setPalette(true)}
-            className="flex w-full items-center gap-2 rounded-xl bg-white px-3 py-2 text-sm text-stone-400 ring-1 ring-stone-200 transition hover:ring-stone-300"
+            className="flex w-full items-center gap-2 rounded-xl bg-surface px-3 py-2 text-sm text-stone-400 ring-1 ring-stone-200 transition hover:ring-stone-300"
           >
             <Search size={15} />
             <span className="flex-1 text-left">Cerca…</span>
@@ -76,7 +78,7 @@ export function Layout() {
               className={({ isActive }) =>
                 cx(
                   'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition',
-                  isActive ? 'bg-white text-stone-900 shadow-soft ring-1 ring-stone-900/5' : 'text-stone-500 hover:bg-stone-900/5 hover:text-stone-800',
+                  isActive ? 'bg-surface text-stone-900 shadow-soft ring-1 ring-stone-900/5' : 'text-stone-500 hover:bg-stone-900/5 hover:text-stone-800',
                 )
               }
             >
@@ -103,7 +105,7 @@ export function Layout() {
                 key={c.id}
                 to={`/clienti/${c.id}`}
                 className={({ isActive }) =>
-                  cx('flex items-center gap-2.5 rounded-xl px-3 py-1.5 text-sm transition', isActive ? 'bg-white font-semibold shadow-soft ring-1 ring-stone-900/5' : 'text-stone-600 hover:bg-stone-900/5')
+                  cx('flex items-center gap-2.5 rounded-xl px-3 py-1.5 text-sm transition', isActive ? 'bg-surface font-semibold shadow-soft ring-1 ring-stone-900/5' : 'text-stone-600 hover:bg-stone-900/5')
                 }
                 title={pulse.nextAction}
               >
@@ -119,14 +121,14 @@ export function Layout() {
           <AccountBox />
           <NavLink
             to="/impostazioni/ai"
-            className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold', isActive ? 'bg-white text-stone-900 shadow-soft' : 'text-stone-500 hover:bg-stone-900/5')}
+            className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold', isActive ? 'bg-surface text-stone-900 shadow-soft' : 'text-stone-500 hover:bg-stone-900/5')}
           >
             <Sparkles size={17} /> Provider AI
           </NavLink>
           <NavLink
             end
             to="/impostazioni"
-            className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold', isActive ? 'bg-white text-stone-900 shadow-soft' : 'text-stone-500 hover:bg-stone-900/5')}
+            className={({ isActive }) => cx('flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold', isActive ? 'bg-surface text-stone-900 shadow-soft' : 'text-stone-500 hover:bg-stone-900/5')}
           >
             <Settings size={17} /> Impostazioni e backup
           </NavLink>
@@ -135,9 +137,10 @@ export function Layout() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Header mobile */}
-        <header className="no-print sticky top-0 z-20 flex items-center gap-1 border-b border-stone-200/70 bg-white/85 px-4 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 backdrop-blur-lg md:hidden">
+        <header className="no-print sticky top-0 z-20 flex items-center gap-1 border-b border-stone-200/70 bg-surface/85 px-4 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 backdrop-blur-lg md:hidden">
           <img src="/favicon.svg" alt="" className="size-7" />
           <p className="flex-1 font-extrabold tracking-tight">Regia</p>
+          <ThemeToggle size="sm" className="mr-1" />
           <button type="button" aria-label="Cerca" onClick={() => setPalette(true)} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5">
             <Search size={20} />
           </button>
@@ -155,7 +158,7 @@ export function Layout() {
         </main>
 
         {/* Tab bar mobile con pulsante + centrale */}
-        <nav className="no-print pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-stone-200/70 bg-white/95 backdrop-blur-lg md:hidden">
+        <nav className="no-print pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-stone-200/70 bg-surface/95 backdrop-blur-lg md:hidden">
           <div className="grid grid-cols-5 items-end">
             {MOBILE_NAV.slice(0, 2).map((n) => (
               <MobileTab key={n.to} n={n} badge={badges[n.to]} />
@@ -165,7 +168,7 @@ export function Layout() {
                 type="button"
                 aria-label="Crea nuovo"
                 onClick={() => setSheet(true)}
-                className="-mt-6 mb-1.5 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-600 text-white shadow-lg shadow-brand-600/30 ring-4 ring-white transition active:scale-95"
+                className="-mt-6 mb-1.5 flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-violet-600 text-white shadow-lg shadow-brand-600/30 ring-4 ring-surface transition active:scale-95"
               >
                 <Plus size={26} strokeWidth={2.5} />
               </button>
@@ -201,7 +204,7 @@ function MobileTab({ n, badge }: { n: (typeof MOBILE_NAV)[number]; badge?: numbe
             <n.icon size={21} strokeWidth={isActive ? 2.4 : 2} />
           </span>
           {n.label}
-          {badge ? <span className="absolute top-1.5 left-1/2 ml-2.5 min-w-4 rounded-full bg-rose-500 px-1 text-center text-[10px] leading-4 font-bold text-white ring-2 ring-white">{badge}</span> : null}
+          {badge ? <span className="absolute top-1.5 left-1/2 ml-2.5 min-w-4 rounded-full bg-rose-500 px-1 text-center text-[10px] leading-4 font-bold text-white ring-2 ring-surface">{badge}</span> : null}
         </>
       )}
     </NavLink>
@@ -212,7 +215,7 @@ function HeaderAvatar() {
   const user = useAuth((st) => st.user)
   const name = user ? displayName(user) : null
   return name ? (
-    <span className="flex size-9 items-center justify-center rounded-full bg-stone-900 text-xs font-bold text-white">{name.slice(0, 1).toUpperCase()}</span>
+    <span className="flex size-9 items-center justify-center rounded-full bg-chip text-xs font-bold text-white">{name.slice(0, 1).toUpperCase()}</span>
   ) : (
     <span className="flex size-9 items-center justify-center rounded-xl text-stone-500">
       <Settings size={20} />
@@ -239,8 +242,8 @@ function CreateSheet({ onClose }: { onClose: () => void }) {
   }, [onClose])
   return (
     <div className="fixed inset-0 z-50 flex items-end md:hidden">
-      <div className="absolute inset-0 animate-in bg-stone-900/40" onClick={onClose} />
-      <div className="pb-safe relative w-full animate-rise rounded-t-3xl bg-white px-4 pt-3 shadow-lift">
+      <div className="absolute inset-0 animate-in bg-black/45" onClick={onClose} />
+      <div className="pb-safe relative w-full animate-rise rounded-t-3xl bg-surface px-4 pt-3 shadow-lift">
         <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-stone-200" />
         <p className="px-1 pb-2 text-lg font-extrabold tracking-tight">Cosa vuoi creare?</p>
         <div className="grid grid-cols-2 gap-2.5 pb-4">
@@ -309,12 +312,12 @@ export function QuickCreate({ clientId, date }: { clientId?: string; date?: stri
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-brand-600 px-3.5 text-sm font-semibold text-white shadow-sm shadow-brand-600/20 transition hover:bg-brand-700 active:scale-[0.98]"
+        className="inline-flex h-10 items-center gap-1.5 rounded-xl bg-brand-600 px-3.5 text-sm font-semibold text-white shadow-sm shadow-brand-600/20 transition hover:brightness-110 active:scale-[0.98]"
       >
         <Plus size={16} strokeWidth={2.5} /> Nuovo
       </button>
       {open && (
-        <div className="absolute right-0 z-30 mt-2 w-56 animate-pop rounded-2xl bg-white p-1.5 shadow-lift ring-1 ring-stone-900/10">
+        <div className="absolute right-0 z-30 mt-2 w-56 animate-pop rounded-2xl bg-surface p-1.5 shadow-lift ring-1 ring-stone-900/10">
           {items.map((i) => (
             <button
               key={i.label}

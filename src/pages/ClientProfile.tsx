@@ -65,7 +65,7 @@ export function ClientProfile({ client }: { client: Client }) {
                     key={p}
                     type="button"
                     onClick={() => set({ platforms: on ? client.platforms.filter((x) => x !== p) : [...client.platforms, p] })}
-                    className={cx('inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1 text-xs font-semibold ring-1 transition', on ? 'bg-white shadow-soft ring-stone-300' : 'text-stone-400 ring-stone-200')}
+                    className={cx('inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1 text-xs font-semibold ring-1 transition', on ? 'bg-surface shadow-soft ring-stone-300' : 'text-stone-400 ring-stone-200')}
                   >
                     <PlatformBadge platform={p} className={cx(!on && 'opacity-30')} /> {PLATFORM_META[p].label}
                   </button>

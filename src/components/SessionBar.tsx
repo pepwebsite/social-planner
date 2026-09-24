@@ -49,7 +49,7 @@ export function SessionBar() {
     : undefined
 
   return (
-    <div className={cx('no-print sticky top-0 z-30 border-b backdrop-blur', over ? 'border-amber-200 bg-amber-50/95' : 'border-stone-200/70 bg-white/85')}>
+    <div className={cx('no-print sticky top-0 z-30 border-b backdrop-blur', over ? 'border-amber-200 bg-amber-50/95' : 'border-stone-200/70 bg-surface/85')}>
       <div className="flex items-center gap-3 px-4 py-2 md:px-8">
         <ClientAvatar client={client} size="sm" />
         <div className="min-w-0 flex-1">

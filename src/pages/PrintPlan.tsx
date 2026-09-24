@@ -21,7 +21,7 @@ export function PrintPlan() {
     .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
 
   return (
-    <div className="min-h-full bg-white">
+    <div className="force-light min-h-full bg-surface text-ink">
       <div className="mx-auto max-w-3xl px-6 py-10 print:px-0 print:py-0">
         <div className="no-print mb-8 flex items-center justify-between rounded-2xl bg-stone-50 p-4">
           <p className="text-sm text-stone-600">Stampa o scegli “Salva come PDF” per inviarlo al cliente.</p>
@@ -45,7 +45,7 @@ export function PrintPlan() {
           {list.map((p, i) => (
             <article key={p.id} className="break-inside-avoid rounded-2xl border border-stone-200 p-5">
               <div className="mb-3 flex flex-wrap items-center gap-2">
-                <span className="flex size-7 items-center justify-center rounded-full bg-stone-900 text-xs font-bold text-white">{i + 1}</span>
+                <span className="flex size-7 items-center justify-center rounded-full bg-chip text-xs font-bold text-white">{i + 1}</span>
                 <p className="font-bold">
                   {capitalize(fmt(p.date, 'EEEE d MMMM'))} · {p.time}
                 </p>

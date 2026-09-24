@@ -236,5 +236,5 @@ function ProviderCard({ info, expanded, onToggle }: { info: ProviderInfo; expand
 }
 
 const Step = ({ n }: { n: number }) => (
-  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-stone-900 text-xs font-bold text-white">{n}</span>
+  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-chip text-xs font-bold text-white">{n}</span>
 )

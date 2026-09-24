@@ -142,7 +142,7 @@ function Inner() {
           ) : (
             <div className="space-y-2">
               {form.influencers.map((i) => (
-                <div key={i.id} className="flex items-start gap-2 rounded-xl bg-white p-2.5 ring-1 ring-stone-200">
+                <div key={i.id} className="flex items-start gap-2 rounded-xl bg-surface p-2.5 ring-1 ring-stone-200">
                   <span className="mt-2 flex size-6 shrink-0 items-center justify-center rounded-full bg-pink-50 text-pink-600">
                     <UserRound size={13} />
                   </span>

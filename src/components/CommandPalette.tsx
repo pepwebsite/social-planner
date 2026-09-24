@@ -103,8 +103,8 @@ function Palette({ onClose }: { onClose: () => void }) {
   let lastGroup = ''
   return (
     <div className="fixed inset-0 z-[55] flex items-start justify-center p-4 pt-[12vh]">
-      <div className="absolute inset-0 animate-in bg-stone-900/40 backdrop-blur-[2px]" onClick={onClose} />
-      <div className="relative w-full max-w-lg animate-pop overflow-hidden rounded-2xl bg-white shadow-lift ring-1 ring-stone-900/10">
+      <div className="absolute inset-0 animate-in bg-black/45 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="relative w-full max-w-lg animate-pop overflow-hidden rounded-2xl bg-surface shadow-lift ring-1 ring-stone-900/10">
         <div className="flex items-center gap-3 border-b border-stone-100 px-4">
           <Search size={18} className="text-stone-400" />
           <input

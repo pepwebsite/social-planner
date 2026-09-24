@@ -122,13 +122,13 @@ export function AiWeekModal({ client, start, onClose }: { client: Client; start:
             const on = keep.includes(i)
             const open = expanded === i
             return (
-              <div key={i} className={cx('rounded-2xl bg-white ring-1 transition', on ? 'ring-stone-200' : 'opacity-50 ring-stone-100')}>
+              <div key={i} className={cx('rounded-2xl bg-surface ring-1 transition', on ? 'ring-stone-200' : 'opacity-50 ring-stone-100')}>
                 <div className="flex items-center gap-3 p-3">
                   <button
                     type="button"
                     aria-label={on ? 'Escludi' : 'Includi'}
                     onClick={() => setKeep((k) => (on ? k.filter((x) => x !== i) : [...k, i]))}
-                    className={cx('flex size-5 shrink-0 items-center justify-center rounded-md transition', on ? 'bg-brand-600 text-white' : 'bg-white ring-1 ring-stone-300')}
+                    className={cx('flex size-5 shrink-0 items-center justify-center rounded-md transition', on ? 'bg-brand-600 text-white' : 'bg-surface ring-1 ring-stone-300')}
                   >
                     {on && <Check size={13} strokeWidth={3} />}
                   </button>
@@ -167,7 +167,7 @@ export function AiWeekModal({ client, start, onClose }: { client: Client; start:
           <div>
             <p className="mb-2 text-[13px] font-semibold text-stone-700">Uscite da coprire</p>
             {slots.length === 0 ? (
-              <p className="rounded-xl bg-white px-3 py-3 text-sm text-stone-500 ring-1 ring-stone-200">
+              <p className="rounded-xl bg-surface px-3 py-3 text-sm text-stone-500 ring-1 ring-stone-200">
                 {client.slots.length === 0 ? 'Nessuna uscita fissa nella scheda: l’AI proporrà 3-4 contenuti distribuiti nella settimana.' : 'Tutte le uscite di questa settimana sono già coperte. L’AI proporrà contenuti extra.'}
               </p>
             ) : (
@@ -179,7 +179,7 @@ export function AiWeekModal({ client, start, onClose }: { client: Client; start:
                       key={s.slotId}
                       type="button"
                       onClick={() => setPicked((p) => (on ? p.filter((x) => x !== s.slotId) : [...p, s.slotId]))}
-                      className={cx('flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm ring-1 transition', on ? 'bg-white font-medium shadow-soft ring-brand-300' : 'text-stone-400 ring-stone-200')}
+                      className={cx('flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm ring-1 transition', on ? 'bg-surface font-medium shadow-soft ring-brand-300' : 'text-stone-400 ring-stone-200')}
                     >
                       <span className={cx('flex size-4 shrink-0 items-center justify-center rounded', on ? 'bg-brand-600 text-white' : 'ring-1 ring-stone-300')}>{on && <Check size={11} strokeWidth={3} />}</span>
                       {slotLabel(s)}

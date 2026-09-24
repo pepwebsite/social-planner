@@ -12,6 +12,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <title>Regia · Social planner</title>
+    <script>
+      // Applica tema e visione dei colori prima del primo disegno (niente lampi)
+      try {
+        var p = (JSON.parse(localStorage.getItem('regia-prefs') || '{}').state) || {}
+        var dark = p.theme === 'dark' || ((!p.theme || p.theme === 'auto') && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        if (p.cvd && p.cvd !== 'none') document.documentElement.dataset.cvd = p.cvd
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

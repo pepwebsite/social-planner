@@ -52,7 +52,7 @@ export function GoogleCalendarModal({ onClose }: { onClose: () => void }) {
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
   return (
     <li className="flex gap-3">
-      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-stone-900 text-xs font-bold text-white">{n}</span>
+      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-chip text-xs font-bold text-white">{n}</span>
       <div className="min-w-0 flex-1 text-sm text-stone-700">{children}</div>
     </li>
   )
@@ -113,20 +113,20 @@ function ExportPanel() {
       {error && <p className="rounded-xl bg-rose-50 px-3 py-2.5 text-sm text-rose-700 ring-1 ring-rose-200">{error}</p>}
 
       {!urls ? (
-        <Button variant="primary" className="h-11 w-full" disabled={busy} onClick={create} icon={busy ? <Loader2 size={16} className="animate-spin" /> : <GoogleCalendarIcon size={18} className="rounded bg-white" />}>
+        <Button variant="primary" className="h-11 w-full" disabled={busy} onClick={create} icon={busy ? <Loader2 size={16} className="animate-spin" /> : <GoogleCalendarIcon size={18} className="rounded bg-surface" />}>
           Crea il mio link del calendario
         </Button>
       ) : (
         <>
           <ol className="space-y-3">
             <Step n={1}>
-              <a href={urls.google} target="_blank" rel="noreferrer" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white font-semibold text-stone-800 ring-1 ring-stone-200 transition hover:bg-stone-50">
+              <a href={urls.google} target="_blank" rel="noreferrer" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-surface font-semibold text-stone-800 ring-1 ring-stone-200 transition hover:bg-stone-50">
                 <GoogleCalendarIcon size={20} /> Aggiungi a Google Calendar <ExternalLink size={14} className="text-stone-400" />
               </a>
               <p className="mt-1.5 text-xs text-stone-500">Si apre Google Calendar: conferma con “Aggiungi”. Da computer è più semplice; sul telefono comparirà da solo nell’app Google Calendar.</p>
             </Step>
             <Step n={2}>
-              <a href={urls.webcal} className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white font-semibold text-stone-800 ring-1 ring-stone-200 transition hover:bg-stone-50">
+              <a href={urls.webcal} className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-surface font-semibold text-stone-800 ring-1 ring-stone-200 transition hover:bg-stone-50">
                 <Smartphone size={18} /> iPhone: aggiungi al Calendario
               </a>
               <p className="mt-1.5 text-xs text-stone-500">Solo se usi il calendario di Apple invece di Google.</p>
@@ -234,7 +234,7 @@ function ImportPanel() {
           <p className="mb-2 text-[13px] font-semibold text-stone-700">Calendari collegati</p>
           <div className="space-y-1.5">
             {calendars.map((c) => (
-              <div key={c.id} className="flex items-center gap-3 rounded-xl bg-white px-3 py-2.5 ring-1 ring-stone-200">
+              <div key={c.id} className="flex items-center gap-3 rounded-xl bg-surface px-3 py-2.5 ring-1 ring-stone-200">
                 <span className="size-3 rounded-full" style={{ background: c.color }} />
                 <span className="min-w-0 flex-1 truncate text-sm font-semibold">{c.name}</span>
                 <button

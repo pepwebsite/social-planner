@@ -34,7 +34,7 @@ export function PostCard({
       }}
       onClick={() => openPost(post.id)}
       className={cx(
-        'group relative w-full overflow-hidden rounded-xl bg-white p-2.5 pl-3 text-left shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-px hover:shadow-lift',
+        'group relative w-full overflow-hidden rounded-xl bg-surface p-2.5 pl-3 text-left shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-px hover:shadow-lift',
         post.status === 'pubblicato' && 'opacity-60',
         className,
       )}

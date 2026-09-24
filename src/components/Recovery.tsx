@@ -166,12 +166,12 @@ function RestoreDialog({ pending, onClose }: { pending: Pending; onClose: () => 
           type="button"
           disabled={busy}
           onClick={() => run('unisci')}
-          className="w-full rounded-2xl bg-white p-4 text-left ring-2 ring-emerald-400 transition hover:bg-emerald-50/50 disabled:opacity-50"
+          className="w-full rounded-2xl bg-surface p-4 text-left ring-2 ring-emerald-400 transition hover:bg-emerald-50/50 disabled:opacity-50"
         >
           <p className="font-bold text-emerald-800">Recupera ciò che manca (consigliato)</p>
           <p className="mt-0.5 text-sm text-stone-600">Rimette clienti, contenuti, eventi e attività che non ci sono più. Quello che hai adesso resta com’è.</p>
         </button>
-        <button type="button" disabled={busy} onClick={() => run('sostituisci')} className="w-full rounded-2xl bg-white p-4 text-left ring-1 ring-stone-200 transition hover:bg-stone-50 disabled:opacity-50">
+        <button type="button" disabled={busy} onClick={() => run('sostituisci')} className="w-full rounded-2xl bg-surface p-4 text-left ring-1 ring-stone-200 transition hover:bg-stone-50 disabled:opacity-50">
           <p className="font-bold">Torna esattamente a questa versione</p>
           <p className="mt-0.5 text-sm text-stone-600">Sostituisce tutto con la copia scelta. Anche i dati attuali vengono conservati in una copia di sicurezza.</p>
         </button>

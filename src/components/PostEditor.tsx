@@ -153,7 +153,7 @@ function EditorInner() {
                   onClick={() => changeStatus(s)}
                   className={cx(
                     'flex flex-col items-start gap-1 rounded-xl px-2.5 py-2 text-left text-xs font-semibold ring-1 transition',
-                    active ? 'bg-white shadow-soft ring-2 ring-brand-500' : 'ring-stone-200 hover:bg-white',
+                    active ? 'bg-surface shadow-soft ring-2 ring-brand-500' : 'ring-stone-200 hover:bg-surface',
                     passed && !active && 'text-stone-400',
                   )}
                 >
@@ -206,7 +206,7 @@ function EditorInner() {
                   onClick={() => set('platform', p)}
                   aria-pressed={form.platform === p}
                   className={cx(
-                    'flex flex-col items-center gap-1 rounded-xl bg-white py-2 text-[11px] font-semibold ring-1 transition',
+                    'flex flex-col items-center gap-1 rounded-xl bg-surface py-2 text-[11px] font-semibold ring-1 transition',
                     form.platform === p ? 'text-stone-900 shadow-soft ring-2 ring-brand-500' : 'text-stone-500 ring-stone-200 hover:ring-stone-300',
                   )}
                 >
@@ -250,7 +250,7 @@ function EditorInner() {
             placeholder="Scrivi la caption, oppure fattela proporre dall’AI qui sotto"
             className="min-h-40"
           />
-          <div className="mt-2 rounded-xl bg-white p-2.5 ring-1 ring-stone-200">
+          <div className="mt-2 rounded-xl bg-surface p-2.5 ring-1 ring-stone-200">
             <div className="flex gap-2">
               <Input
                 value={aiAsk}
@@ -289,7 +289,7 @@ function EditorInner() {
           <div className="flex gap-2">
             <Input value={form.assetLink} onChange={(e) => set('assetLink', e.target.value)} placeholder="https://" />
             {/^https?:\/\//.test(form.assetLink) && (
-              <a href={form.assetLink} target="_blank" rel="noreferrer" className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-stone-600 ring-1 ring-stone-200 hover:bg-stone-50" title="Apri link">
+              <a href={form.assetLink} target="_blank" rel="noreferrer" className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface text-stone-600 ring-1 ring-stone-200 hover:bg-stone-50" title="Apri link">
                 <ExternalLink size={16} />
               </a>
             )}
@@ -318,7 +318,7 @@ function EditorInner() {
       </div>
 
       {/* Footer */}
-      <div className="pb-safe flex items-center gap-1 border-t border-stone-200/70 bg-white/60 px-3 py-3 sm:px-5">
+      <div className="pb-safe flex items-center gap-1 border-t border-stone-200/70 bg-surface/60 px-3 py-3 sm:px-5">
         {!isNew && (
           <>
             <IconButton

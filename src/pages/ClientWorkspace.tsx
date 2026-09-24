@@ -147,7 +147,7 @@ function WeekTab({ client, start, setStart }: { client: Client; start: Date; set
           <Link
             to={`/clienti/${client.id}/stampa?w=${iso[0]}`}
             target="_blank"
-            className="inline-flex size-10 items-center justify-center rounded-xl bg-white text-stone-600 ring-1 ring-stone-200 hover:bg-stone-50"
+            className="inline-flex size-10 items-center justify-center rounded-xl bg-surface text-stone-600 ring-1 ring-stone-200 hover:bg-stone-50"
             title="Piano editoriale stampabile / PDF"
           >
             <Printer size={16} />
@@ -155,7 +155,7 @@ function WeekTab({ client, start, setStart }: { client: Client; start: Date; set
         </div>
 
         {slots.length > 0 && (
-          <div className="mb-4 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-soft ring-1 ring-stone-900/5">
+          <div className="mb-4 flex items-center gap-3 rounded-2xl bg-surface px-4 py-3 shadow-soft ring-1 ring-stone-900/5">
             <p className="text-sm font-semibold whitespace-nowrap">
               {covered}/{slots.length} uscite coperte
             </p>
@@ -177,7 +177,7 @@ function WeekTab({ client, start, setStart }: { client: Client; start: Date; set
             const dayEvents = events.filter((e) => e.clientId === client.id && e.date === date)
             const past = date < today
             return (
-              <div key={date} className={cx('flex flex-col gap-3 rounded-2xl p-3 sm:flex-row', date === today ? 'bg-brand-50/70 ring-1 ring-brand-200' : 'bg-white/60 ring-1 ring-stone-900/5', past && 'opacity-70')}>
+              <div key={date} className={cx('flex flex-col gap-3 rounded-2xl p-3 sm:flex-row', date === today ? 'bg-brand-50/70 ring-1 ring-brand-200' : 'bg-surface/60 ring-1 ring-stone-900/5', past && 'opacity-70')}>
                 <div className="flex w-24 shrink-0 items-baseline gap-2 sm:flex-col sm:gap-0">
                   <p className={cx('text-xs font-bold tracking-wide uppercase', date === today ? 'text-brand-600' : 'text-stone-400')}>{fmt(days[i], 'EEEE')}</p>
                   <p className="text-xl font-extrabold whitespace-nowrap">{fmt(days[i], 'd MMM')}</p>
@@ -206,7 +206,7 @@ function WeekTab({ client, start, setStart }: { client: Client; start: Date; set
                     </button>
                   ))}
                   {dayPosts.length === 0 && missing.length === 0 && (
-                    <button type="button" onClick={() => ui.newPost({ clientId: client.id, date })} className="flex min-h-12 items-center gap-2 rounded-xl px-3 text-sm text-stone-400 transition hover:bg-white hover:text-stone-600">
+                    <button type="button" onClick={() => ui.newPost({ clientId: client.id, date })} className="flex min-h-12 items-center gap-2 rounded-xl px-3 text-sm text-stone-400 transition hover:bg-surface hover:text-stone-600">
                       <Plus size={15} /> Aggiungi
                     </button>
                   )}

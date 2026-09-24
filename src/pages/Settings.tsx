@@ -10,6 +10,7 @@ import { signOutAndClear } from '../lib/sync'
 import { displayName, useAuth } from '../auth'
 import { SyncBadge } from '../components/AuthGate'
 import { RecoveryCard } from '../components/Recovery'
+import { AppearanceCard } from '../components/AppearanceCard'
 import { openTutorial } from '../components/Tutorial'
 import { todayISO } from '../lib/dates'
 import { PageHeader } from '../components/Layout'
@@ -60,7 +61,7 @@ export function Settings() {
     <div className="mx-auto max-w-3xl pb-10">
       <PageHeader title="Impostazioni e backup" />
       <div className="space-y-4 px-4 md:px-8">
-        <Link to="/impostazioni/ai" className="block rounded-2xl bg-white p-5 shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-px hover:shadow-lift">
+        <Link to="/impostazioni/ai" className="block rounded-2xl bg-surface p-5 shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-px hover:shadow-lift">
           <div className="flex items-center gap-3">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-brand-600 text-white">
               <Sparkles size={18} />
@@ -87,7 +88,7 @@ export function Settings() {
 
         {cloudEnabled && user && (
           <Card className="flex flex-wrap items-center gap-3 p-5">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-stone-900 text-sm font-bold text-white">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-chip text-sm font-bold text-white">
               {displayName(user).slice(0, 1).toUpperCase()}
             </span>
             <div className="min-w-0 flex-1">
@@ -100,6 +101,8 @@ export function Settings() {
             </Button>
           </Card>
         )}
+
+        <AppearanceCard />
 
         <RecoveryCard />
 
@@ -200,7 +203,7 @@ export function Settings() {
           <Button
             variant="danger"
             icon={<RotateCcw size={15} />}
-            className={cx(confirmReset && 'bg-rose-600 text-white ring-rose-600 hover:bg-rose-700')}
+            className={cx(confirmReset && 'bg-rose-600 text-white ring-rose-600 hover:brightness-110')}
             onClick={() => {
               if (!confirmReset) return setConfirmReset(true)
               resetAll()

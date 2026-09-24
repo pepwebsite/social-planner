@@ -44,7 +44,7 @@ export function ApprovalModal({ client, posts, period, onClose }: { client: Clie
             Copia testo
           </Button>
           {contact?.email && (
-            <a href={mailtoLink(contact.email, `Piano social ${client.name} – ${period}`, text)} onClick={markSent} className={cx('inline-flex h-10 items-center gap-1.5 rounded-xl bg-white px-3.5 text-sm font-semibold ring-1 ring-stone-200 hover:bg-stone-50', !picked.length && 'pointer-events-none opacity-50')}>
+            <a href={mailtoLink(contact.email, `Piano social ${client.name} – ${period}`, text)} onClick={markSent} className={cx('inline-flex h-10 items-center gap-1.5 rounded-xl bg-surface px-3.5 text-sm font-semibold ring-1 ring-stone-200 hover:bg-stone-50', !picked.length && 'pointer-events-none opacity-50')}>
               <Mail size={15} /> Email
             </a>
           )}
@@ -80,7 +80,7 @@ export function ApprovalModal({ client, posts, period, onClose }: { client: Clie
                     setPicked((x) => (on ? x.filter((i) => i !== p.id) : [...x, p.id]))
                     setEdited(null)
                   }}
-                  className={cx('flex w-full items-center gap-3 rounded-xl bg-white px-3 py-2 text-left ring-1 transition', on ? 'ring-brand-300' : 'opacity-60 ring-stone-200')}
+                  className={cx('flex w-full items-center gap-3 rounded-xl bg-surface px-3 py-2 text-left ring-1 transition', on ? 'ring-brand-300' : 'opacity-60 ring-stone-200')}
                 >
                   <span className={cx('flex size-4 shrink-0 items-center justify-center rounded', on ? 'bg-brand-600 text-white' : 'ring-1 ring-stone-300')}>{on && <Check size={11} strokeWidth={3} />}</span>
                   <PlatformBadge platform={p.platform} />

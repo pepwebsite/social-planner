@@ -19,7 +19,7 @@ const HERO_BG: Record<Greeting['period'], string> = {
   mattina: 'from-amber-400 via-orange-400 to-rose-500',
   pomeriggio: 'from-sky-500 via-indigo-500 to-violet-500',
   sera: 'from-indigo-600 via-violet-600 to-fuchsia-600',
-  notte: 'from-slate-800 via-indigo-900 to-violet-900',
+  notte: 'from-[#1e293b] via-[#312e81] to-[#4c1d95]',
 }
 
 function useFirstName() {
@@ -161,7 +161,7 @@ export function Today() {
       {/* Prossima mossa */}
       {top && (
         <div className="px-4 pt-4 md:px-8">
-          <div className="flex items-center gap-3 rounded-2xl bg-white p-3.5 shadow-soft ring-1 ring-stone-900/5 md:p-4">
+          <div className="flex items-center gap-3 rounded-2xl bg-surface p-3.5 shadow-soft ring-1 ring-stone-900/5 md:p-4">
             <ClientAvatar client={top.c} size="lg" />
             <button type="button" onClick={() => nav(`/clienti/${top.c.id}`)} className="min-w-0 flex-1 text-left">
               <p className="text-[11px] font-bold tracking-wider text-brand-600 uppercase">La tua prossima mossa</p>
@@ -188,7 +188,7 @@ export function Today() {
             key={s.label}
             type="button"
             onClick={() => nav(s.to)}
-            className="flex min-w-[42%] shrink-0 snap-start items-center gap-3 rounded-2xl bg-white p-3.5 text-left shadow-soft ring-1 ring-stone-900/5 transition active:scale-[0.98] md:min-w-0 md:hover:-translate-y-px md:hover:shadow-lift"
+            className="flex min-w-[42%] shrink-0 snap-start items-center gap-3 rounded-2xl bg-surface p-3.5 text-left shadow-soft ring-1 ring-stone-900/5 transition active:scale-[0.98] md:min-w-0 md:hover:-translate-y-px md:hover:shadow-lift"
           >
             <span className={cx('flex size-10 shrink-0 items-center justify-center rounded-xl', s.tone)}>
               <s.icon size={19} />
@@ -218,7 +218,7 @@ export function Today() {
                     <button type="button" onClick={() => nav(`/clienti/${c.id}`)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
                       <span className="relative">
                         <ClientAvatar client={c} />
-                        <span className={cx('absolute -top-0.5 -right-0.5 size-3 rounded-full ring-2 ring-white', URGENCY_META[p.urgency].dot)} />
+                        <span className={cx('absolute -top-0.5 -right-0.5 size-3 rounded-full ring-2 ring-surface', URGENCY_META[p.urgency].dot)} />
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="truncate font-semibold">{c.name}</p>
@@ -352,7 +352,7 @@ function Welcome({ name }: { name: string | null }) {
 
       <ol className="mt-6 space-y-3">
         {steps.map((s, i) => (
-          <li key={s.title} className="flex items-start gap-3 rounded-2xl bg-white p-4 shadow-soft ring-1 ring-stone-900/5">
+          <li key={s.title} className="flex items-start gap-3 rounded-2xl bg-surface p-4 shadow-soft ring-1 ring-stone-900/5">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
               <s.icon size={18} />
             </span>

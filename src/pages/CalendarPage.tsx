@@ -117,7 +117,7 @@ export function CalendarPage() {
               type="button"
               onClick={() => setGcal(true)}
               title="Collega Google Calendar"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-3 text-sm font-semibold text-stone-700 shadow-soft ring-1 ring-stone-900/5 transition hover:bg-stone-50"
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-surface px-3 text-sm font-semibold text-stone-700 shadow-soft ring-1 ring-stone-900/5 transition hover:bg-stone-50"
             >
               <GoogleCalendarIcon size={20} />
               Google Calendar
@@ -138,7 +138,7 @@ export function CalendarPage() {
               onClick={() => setView(v.value)}
               className={cx(
                 'flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-[13px] font-semibold transition',
-                view === v.value ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800',
+                view === v.value ? 'bg-surface text-stone-900 shadow-sm' : 'text-stone-500 hover:text-stone-800',
               )}
             >
               <v.icon size={15} className="hidden sm:block" />
@@ -147,7 +147,7 @@ export function CalendarPage() {
           ))}
         </div>
         <div className="flex items-center gap-2 md:ml-auto">
-          <div className="flex min-w-0 flex-1 items-center gap-1 rounded-xl bg-white p-1 shadow-soft ring-1 ring-stone-900/5 md:flex-none">
+          <div className="flex min-w-0 flex-1 items-center gap-1 rounded-xl bg-surface p-1 shadow-soft ring-1 ring-stone-900/5 md:flex-none">
             <IconButton label="Periodo precedente" className="size-8" onClick={() => step(-1)}>
               <ChevronLeft size={17} />
             </IconButton>
@@ -186,7 +186,7 @@ export function CalendarPage() {
               key={c.id}
               type="button"
               onClick={() => setHidden((h) => (off ? h.filter((x) => x !== c.id) : [...h, c.id]))}
-              className={cx('inline-flex shrink-0 items-center gap-1.5 rounded-full py-1 pr-3 pl-1 text-xs font-semibold ring-1 transition', off ? 'bg-transparent text-stone-400 ring-stone-200' : 'bg-white text-stone-700 shadow-soft ring-stone-900/5')}
+              className={cx('inline-flex shrink-0 items-center gap-1.5 rounded-full py-1 pr-3 pl-1 text-xs font-semibold ring-1 transition', off ? 'bg-transparent text-stone-400 ring-stone-200' : 'bg-surface text-stone-700 shadow-soft ring-stone-900/5')}
             >
               <span className={cx(off && 'opacity-40 grayscale')}>
                 <ClientAvatar client={c} size="sm" />
@@ -380,7 +380,7 @@ function MonthView(props: ViewProps) {
 
   return (
     <div>
-      <div className="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-stone-900/5">
+      <div className="overflow-hidden rounded-2xl bg-surface shadow-soft ring-1 ring-stone-900/5">
         <div className="grid grid-cols-7 border-b border-stone-100">
           {WEEKDAYS_SHORT.map((w) => (
             <p key={w} className="py-2 text-center text-[11px] font-bold tracking-wide text-stone-400 uppercase">
@@ -454,7 +454,7 @@ function MonthView(props: ViewProps) {
                           e.stopPropagation()
                           useUi.getState().openPost(p.id)
                         }}
-                        className="flex w-full items-center gap-1 rounded-md bg-white px-1 py-0.5 text-left text-[11px] shadow-sm ring-1 ring-stone-900/5 hover:ring-stone-300"
+                        className="flex w-full items-center gap-1 rounded-md bg-surface px-1 py-0.5 text-left text-[11px] shadow-sm ring-1 ring-stone-900/5 hover:ring-stone-300"
                       >
                         <span className="h-3 w-0.5 shrink-0 rounded-full" style={{ background: c?.color }} />
                         <span className={cx('size-1.5 shrink-0 rounded-full', STATUS_META[p.status].dot)} />
@@ -506,14 +506,14 @@ function WeekView(props: ViewProps) {
                 onClick={() => setSelected(date)}
                 className={cx(
                   'flex flex-col items-center gap-0.5 rounded-2xl py-2 transition',
-                  active ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30' : date === today ? 'bg-brand-50 text-brand-700' : 'bg-white text-stone-700 ring-1 ring-stone-900/5',
+                  active ? 'bg-brand-600 text-white shadow-md shadow-brand-600/30' : date === today ? 'bg-brand-50 text-brand-700' : 'bg-surface text-stone-700 ring-1 ring-stone-900/5',
                 )}
               >
                 <span className={cx('text-[10px] font-bold uppercase', active ? 'text-white/80' : 'text-stone-400')}>{fmt(d, 'EEEEEE')}</span>
                 <span className="text-base font-extrabold">{d.getDate()}</span>
                 <span className="flex h-1.5 gap-0.5">
-                  {external.some((x) => x.date === date) && <span className={cx('size-1.5 rounded-full', active ? 'bg-white/60' : 'bg-stone-400')} />}
-                  {n > 0 && <span className={cx('size-1.5 rounded-full', active ? 'bg-white' : 'bg-brand-500')} />}
+                  {external.some((x) => x.date === date) && <span className={cx('size-1.5 rounded-full', active ? 'bg-surface/60' : 'bg-stone-400')} />}
+                  {n > 0 && <span className={cx('size-1.5 rounded-full', active ? 'bg-surface' : 'bg-brand-500')} />}
                   {m > 0 && <span className={cx('size-1.5 rounded-full', active ? 'bg-rose-200' : 'bg-rose-400')} />}
                 </span>
               </button>
@@ -524,7 +524,7 @@ function WeekView(props: ViewProps) {
       </div>
 
       {/* Computer: sette colonne */}
-      <div className="hidden overflow-x-auto rounded-2xl bg-white shadow-soft ring-1 ring-stone-900/5 md:block">
+      <div className="hidden overflow-x-auto rounded-2xl bg-surface shadow-soft ring-1 ring-stone-900/5 md:block">
         <div className="grid min-w-[900px] grid-cols-7">
           {days.map((d, i) => {
             const date = toISO(d)
@@ -584,7 +584,7 @@ function ClientsView({ visible, posts, events, missing, anchor }: ViewProps) {
   return (
     <>
       {/* Telefono: tabella compatta a pallini */}
-      <div className="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-stone-900/5 md:hidden">
+      <div className="overflow-hidden rounded-2xl bg-surface shadow-soft ring-1 ring-stone-900/5 md:hidden">
         <div className="grid grid-cols-[88px_repeat(7,minmax(0,1fr))] border-b border-stone-100">
           <span />
           {days.map((d, i) => (
@@ -608,7 +608,7 @@ function ClientsView({ visible, posts, events, missing, anchor }: ViewProps) {
                 <div key={date} className={cx('flex flex-wrap content-center items-center justify-center gap-1 p-1', date === today && 'bg-brand-50/50')}>
                   {ev && <span className="size-2.5 rounded-full bg-pink-500" />}
                   {cell.map((p) => (
-                    <button key={p.id} type="button" aria-label={p.title || 'Contenuto'} onClick={() => useUi.getState().openPost(p.id)} className={cx('size-3.5 rounded-full ring-2 ring-white', STATUS_META[p.status].dot)} />
+                    <button key={p.id} type="button" aria-label={p.title || 'Contenuto'} onClick={() => useUi.getState().openPost(p.id)} className={cx('size-3.5 rounded-full ring-2 ring-surface', STATUS_META[p.status].dot)} />
                   ))}
                   {miss.map((m) => (
                     <button
@@ -627,9 +627,9 @@ function ClientsView({ visible, posts, events, missing, anchor }: ViewProps) {
       </div>
 
       {/* Computer: griglia completa */}
-      <div className="hidden overflow-x-auto rounded-2xl bg-white shadow-soft ring-1 ring-stone-900/5 md:block">
+      <div className="hidden overflow-x-auto rounded-2xl bg-surface shadow-soft ring-1 ring-stone-900/5 md:block">
         <div className="grid min-w-[980px]" style={{ gridTemplateColumns: '170px repeat(7, minmax(0, 1fr))' }}>
-          <div className="sticky left-0 z-10 border-b border-stone-100 bg-white" />
+          <div className="sticky left-0 z-10 border-b border-stone-100 bg-surface" />
           {days.map((d, i) => (
             <div key={i} className={cx('border-b border-l border-stone-100 px-2.5 py-2.5', iso[i] === today && 'bg-brand-50/60')}>
               <p className={cx('text-[11px] font-bold tracking-wide uppercase', iso[i] === today ? 'text-brand-600' : 'text-stone-400')}>{fmt(d, 'EEE')}</p>
@@ -638,7 +638,7 @@ function ClientsView({ visible, posts, events, missing, anchor }: ViewProps) {
           ))}
           {visible.map((c) => (
             <div key={c.id} className="contents">
-              <Link to={`/clienti/${c.id}`} className="sticky left-0 z-10 flex items-start gap-2 border-b border-stone-100 bg-white px-3 py-3 hover:bg-stone-50">
+              <Link to={`/clienti/${c.id}`} className="sticky left-0 z-10 flex items-start gap-2 border-b border-stone-100 bg-surface px-3 py-3 hover:bg-stone-50">
                 <ClientAvatar client={c} size="sm" />
                 <span className="text-[13px] leading-tight font-semibold">{c.name}</span>
               </Link>
@@ -726,7 +726,7 @@ function AgendaView({ clients, posts, events, missing, anchor, external }: ViewP
     const past = date < today
     blocks.push(
       <section key={date} className={cx('flex gap-3', past && 'opacity-60')}>
-        <div className={cx('flex w-12 shrink-0 flex-col items-center rounded-2xl py-2 md:w-14', date === today ? 'bg-brand-600 text-white' : 'bg-white ring-1 ring-stone-900/5')}>
+        <div className={cx('flex w-12 shrink-0 flex-col items-center rounded-2xl py-2 md:w-14', date === today ? 'bg-brand-600 text-white' : 'bg-surface ring-1 ring-stone-900/5')}>
           <span className={cx('text-[10px] font-bold uppercase', date === today ? 'text-white/80' : 'text-stone-400')}>{fmt(date, 'EEE')}</span>
           <span className="text-xl leading-tight font-extrabold">{fmt(date, 'd')}</span>
         </div>

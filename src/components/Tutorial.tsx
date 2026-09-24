@@ -20,7 +20,7 @@ const d = (ms: number): CSSProperties => ({ animationDelay: `${ms}ms` })
 
 function Phone({ children }: { children: ReactNode }) {
   return (
-    <div className="mx-auto w-full max-w-[270px] animate-pop rounded-[28px] bg-stone-900 p-2 shadow-2xl ring-1 ring-white/20">
+    <div className="mx-auto w-full max-w-[270px] animate-pop rounded-[28px] bg-chip p-2 shadow-2xl ring-1 ring-white/20">
       <div className="relative overflow-hidden rounded-[22px] bg-[#f7f6f3] text-stone-900">
         <div className="mx-auto mt-1.5 h-1.5 w-16 rounded-full bg-stone-300" />
         <div className="space-y-2 p-3 pt-2.5">{children}</div>
@@ -62,10 +62,10 @@ const Avatar = ({ l, c }: { l: string; c: string }) => (
 
 function MiniRow({ l, c, name, text, dot, delay, highlight }: { l: string; c: string; name: string; text: string; dot: string; delay: number; highlight?: boolean }) {
   return (
-    <div className={cx('flex animate-slide-left items-center gap-2 rounded-xl bg-white p-2 shadow-sm', highlight && 'ring-2 ring-brand-500')} style={d(delay)}>
+    <div className={cx('flex animate-slide-left items-center gap-2 rounded-xl bg-surface p-2 shadow-sm', highlight && 'ring-2 ring-brand-500')} style={d(delay)}>
       <span className="relative">
         <Avatar l={l} c={c} />
-        <span className={cx('absolute -top-0.5 -right-0.5 size-2 rounded-full ring-2 ring-white', dot)} />
+        <span className={cx('absolute -top-0.5 -right-0.5 size-2 rounded-full ring-2 ring-surface', dot)} />
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[11px] font-bold">{name}</p>
@@ -108,7 +108,7 @@ const SCENES: Scene[] = [
             </span>
           </span>
         ))}
-        <span className="flex size-24 animate-pop items-center justify-center rounded-[28px] bg-white text-5xl font-extrabold text-brand-600 shadow-2xl">R</span>
+        <span className="flex size-24 animate-pop items-center justify-center rounded-[28px] bg-surface text-5xl font-extrabold text-brand-600 shadow-2xl">R</span>
       </div>
     ),
   },
@@ -139,13 +139,13 @@ const SCENES: Scene[] = [
           <Avatar l="BL" c="#8b5cf6" />
           <p className="text-[12px] font-extrabold">Bistrot Luna</p>
         </div>
-        <div className="animate-rise rounded-xl bg-white p-2.5 shadow-sm" style={d(200)}>
+        <div className="animate-rise rounded-xl bg-surface p-2.5 shadow-sm" style={d(200)}>
           <p className="text-[9px] font-bold tracking-wide text-stone-400 uppercase">Tono di voce</p>
           <p className="mt-0.5 min-h-10 text-[11px] text-stone-700">
             <Typing text="Elegante ma ironico. Parla di atmosfera e ingredienti. Poche emoji 🌙🍸" start={500} />
           </p>
         </div>
-        <div className="animate-rise rounded-xl bg-white p-2.5 shadow-sm" style={d(2600)}>
+        <div className="animate-rise rounded-xl bg-surface p-2.5 shadow-sm" style={d(2600)}>
           <p className="text-[9px] font-bold tracking-wide text-stone-400 uppercase">Uscite fisse</p>
           {[
             ['Mar', '18:30', 'Reel'],
@@ -178,7 +178,7 @@ const SCENES: Scene[] = [
           ['Ven 17:00 · Carosello', 'Serata jazz: 5 motivi per non perderla'],
           ['Sab 20:00 · TikTok', 'Il cocktail al bergamotto in 15 secondi'],
         ].map(([when, what], i) => (
-          <div key={when} className="animate-rise rounded-xl bg-white p-2 shadow-sm" style={d(1400 + i * 700)}>
+          <div key={when} className="animate-rise rounded-xl bg-surface p-2 shadow-sm" style={d(1400 + i * 700)}>
             <p className="flex items-center gap-1 text-[9px] font-semibold text-stone-500">
               <Sparkles size={9} className="text-violet-500" /> {when}
             </p>
@@ -204,7 +204,7 @@ const SCENES: Scene[] = [
           </p>
           <Typing text="Ciao Giulia! Ecco il piano social di Bistrot Luna per la settimana 📅 1. Mar 18:30 · Reel… Mi confermi? Grazie!" start={400} speed={22} />
         </div>
-        <div className="animate-rise space-y-1.5 rounded-xl bg-white p-2.5 shadow-sm" style={d(2800)}>
+        <div className="animate-rise space-y-1.5 rounded-xl bg-surface p-2.5 shadow-sm" style={d(2800)}>
           <p className="text-[11px] font-semibold">Il risotto dello chef</p>
           <div className="relative h-5">
             <span style={d(3000)} className="absolute animate-status-1 rounded-full bg-sky-50 px-2 py-0.5 text-[9px] font-bold text-sky-700 ring-1 ring-sky-200">● Bozza</span>
@@ -227,9 +227,9 @@ const SCENES: Scene[] = [
           </span>
           <p className="text-[12px] font-extrabold">Da fare</p>
         </div>
-        <div className="animate-rise rounded-xl bg-white p-2 shadow-sm" style={d(300)}>
+        <div className="animate-rise rounded-xl bg-surface p-2 shadow-sm" style={d(300)}>
           <div className="flex items-center gap-2">
-            <span className="relative flex size-4 shrink-0 items-center justify-center rounded bg-white ring-1 ring-stone-300">
+            <span className="relative flex size-4 shrink-0 items-center justify-center rounded bg-surface ring-1 ring-stone-300">
               <span className="absolute inset-0 flex animate-check items-center justify-center rounded bg-emerald-500 text-white" style={d(1600)}>
                 <Check size={10} strokeWidth={3} />
               </span>
@@ -240,7 +240,7 @@ const SCENES: Scene[] = [
             </div>
           </div>
         </div>
-        <div className="animate-slide-left rounded-xl bg-white p-2 shadow-sm ring-2 ring-emerald-400" style={d(2600)}>
+        <div className="animate-slide-left rounded-xl bg-surface p-2 shadow-sm ring-2 ring-emerald-400" style={d(2600)}>
           <p className="text-[11px] font-semibold">Chiedere il volantino a Sigma</p>
           <p className="text-[9px] font-semibold text-emerald-700">✨ Creata per lunedì prossimo</p>
         </div>
@@ -262,10 +262,10 @@ const SCENES: Scene[] = [
             <Smartphone size={72} strokeWidth={1.4} />
           </span>
         </span>
-        <span className="absolute top-6 right-6 flex animate-pop items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-bold text-stone-800 shadow-lg" style={d(700)}>
+        <span className="absolute top-6 right-6 flex animate-pop items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-xs font-bold text-stone-800 shadow-lg" style={d(700)}>
           <Share size={13} /> Aggiungi a Home
         </span>
-        <span className="absolute bottom-8 left-4 flex size-14 animate-pop items-center justify-center rounded-2xl bg-white text-2xl font-extrabold text-brand-600 shadow-xl" style={d(1300)}>
+        <span className="absolute bottom-8 left-4 flex size-14 animate-pop items-center justify-center rounded-2xl bg-surface text-2xl font-extrabold text-brand-600 shadow-xl" style={d(1300)}>
           R
         </span>
       </div>
@@ -348,7 +348,7 @@ function Player() {
   const progress = Math.min(1, elapsed / SCENE_MS)
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-stone-950/80 backdrop-blur-sm md:p-6">
+    <div className="force-light fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm md:p-6">
       <div
         className={cx('relative flex h-full w-full select-none flex-col overflow-clip bg-gradient-to-br text-white transition-[background] duration-700 md:h-[min(760px,92dvh)] md:max-w-[420px] md:rounded-[32px] md:shadow-2xl', scene.bg)}
         onPointerDown={(e) => {
@@ -380,12 +380,12 @@ function Player() {
         <div className="relative flex gap-1 px-4 pt-[max(14px,env(safe-area-inset-top))]">
           {SCENES.map((_, n) => (
             <div key={n} className="h-1 flex-1 overflow-hidden rounded-full bg-white/30">
-              <div className="h-full rounded-full bg-white" style={{ width: `${n < i ? 100 : n === i ? progress * 100 : 0}%` }} />
+              <div className="h-full rounded-full bg-surface" style={{ width: `${n < i ? 100 : n === i ? progress * 100 : 0}%` }} />
             </div>
           ))}
         </div>
         <div className="relative flex items-center gap-2 px-4 pt-3">
-          <span className="flex size-8 items-center justify-center rounded-xl bg-white text-sm font-extrabold text-brand-600">R</span>
+          <span className="flex size-8 items-center justify-center rounded-xl bg-surface text-sm font-extrabold text-brand-600">R</span>
           <span className="text-sm font-bold">Come funziona Regia</span>
           <span className="text-xs text-white/70">
             {i + 1}/{SCENES.length}
@@ -415,7 +415,7 @@ function Player() {
         {/* Comandi */}
         <div className="relative flex items-center gap-2 px-4 pb-[max(18px,env(safe-area-inset-bottom))]">
           {last ? (
-            <button type="button" onClick={close} className="h-13 flex-1 animate-pop rounded-2xl bg-white py-3.5 text-[15px] font-bold text-stone-900 shadow-lg active:scale-[0.98]">
+            <button type="button" onClick={close} className="h-13 flex-1 animate-pop rounded-2xl bg-surface py-3.5 text-[15px] font-bold text-stone-900 shadow-lg active:scale-[0.98]">
               Inizia a usare Regia
             </button>
           ) : (
@@ -427,7 +427,7 @@ function Player() {
               <button type="button" aria-label="Indietro" disabled={i === 0} onClick={() => go(i - 1)} className="flex size-11 items-center justify-center rounded-full bg-white/15 disabled:opacity-30">
                 <ChevronLeft size={20} />
               </button>
-              <button type="button" onClick={() => go(i + 1)} className="flex h-11 items-center gap-1 rounded-full bg-white px-5 text-sm font-bold text-stone-900 shadow-lg active:scale-[0.97]">
+              <button type="button" onClick={() => go(i + 1)} className="flex h-11 items-center gap-1 rounded-full bg-surface px-5 text-sm font-bold text-stone-900 shadow-lg active:scale-[0.97]">
                 Avanti <ChevronRight size={17} />
               </button>
             </>
