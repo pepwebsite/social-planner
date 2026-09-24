@@ -185,7 +185,7 @@ export function ClientProfile({ client }: { client: Client }) {
       </Section>
 
       <Card className="flex flex-wrap items-center gap-3 p-5">
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 basis-60">
           <p className="font-bold">Archivio</p>
           <p className="text-sm text-stone-500">Archivia i clienti che non segui più: spariscono dalle liste ma restano nel backup.</p>
         </div>

@@ -57,6 +57,7 @@ interface State extends DataSnapshot {
 
   importData: (d: DataSnapshot) => void
   loadDemo: () => void
+  removeDemo: () => number
   resetAll: () => void
   setOnboarded: () => void
 }
@@ -285,6 +286,16 @@ export const useStore = create<State>()(
           onboarded: true,
         }),
       loadDemo: () => set({ ...demoData(), session: null, onboarded: true }),
+      removeDemo: () => {
+        const demoIds = new Set(get().clients.filter(isDemoClient).map((c) => c.id))
+        set((s) => ({
+          clients: s.clients.filter((c) => !demoIds.has(c.id)),
+          posts: s.posts.filter((p) => !demoIds.has(p.clientId)),
+          events: s.events.filter((e) => !demoIds.has(e.clientId)),
+          tasks: s.tasks.filter((t) => !(t.clientId && demoIds.has(t.clientId)) && !(t.clientId === null && t.title === DEMO_GENERAL_TASK)),
+        }))
+        return demoIds.size
+      },
       resetAll: () => set({ ...empty, session: null, onboarded: false, tutorialSeen: false }),
       setOnboarded: () => set({ onboarded: true }),
     }),
@@ -298,6 +309,11 @@ export const snapshot = (): DataSnapshot => {
 }
 
 /* ---------------------------------------------------------------- Demo ---- */
+
+/** I clienti di esempio hanno contatti con identificativi fissi: così si riconoscono con certezza */
+const DEMO_CONTACT_IDS = ['c-sigma-1', 'c-luna-1', 'c-fit-1']
+const DEMO_GENERAL_TASK = 'Report mensile di ottobre per tutti i clienti'
+export const isDemoClient = (c: Client) => c.contacts.some((x) => DEMO_CONTACT_IDS.includes(x.id))
 
 function demoData(): DataSnapshot {
   const d = (offset: number) => toISO(addDays(new Date(), offset))
@@ -412,7 +428,7 @@ function demoData(): DataSnapshot {
   const tasks: Task[] = [
     newTask({ clientId: sigma.id, title: 'Chiedere il nuovo volantino a Sigma', due: w(0), recurrence: 'weekly', waitingOn: 'fornitore' }),
     newTask({ clientId: fit.id, title: 'Farsi mandare le foto dei nuovi corsi', due: d(1), waitingOn: 'cliente' }),
-    newTask({ clientId: null, title: 'Report mensile di ottobre per tutti i clienti', due: d(6) }),
+    newTask({ clientId: null, title: DEMO_GENERAL_TASK, due: d(6) }),
     ...eventTasks(eventLuna),
   ]
 

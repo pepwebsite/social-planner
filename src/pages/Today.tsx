@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { addDays, formatDistanceToNowStrict } from 'date-fns'
 import { it } from 'date-fns/locale'
 import { ArrowRight, Bell, CalendarClock, CalendarDays, CheckCircle2, ChevronRight, ListTodo, Play, PlayCircle, Plus, Send, Sparkles, UserPlus, Users } from 'lucide-react'
-import { useStore } from '../store'
+import { isDemoClient, useStore } from '../store'
 import { useUi } from '../ui'
 import { displayName, useAuth } from '../auth'
 import { capitalize, fmt, relativeDay, todayISO, toISO } from '../lib/dates'
@@ -66,6 +66,7 @@ export function Today() {
   const session = useStore((s) => s.session)
   const name = useFirstName()
   const nav = useNavigate()
+  const demoCount = clients.filter(isDemoClient).length
 
   const active = clients.filter((c) => !c.archived)
   if (!onboarded && active.length === 0) return <Welcome name={name} />
@@ -136,6 +137,26 @@ export function Today() {
           </div>
         </div>
       </div>
+
+      {demoCount > 0 && cloudEnabled && (
+        <div className="px-4 pt-4 md:px-8">
+          <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-amber-50 p-3.5 ring-1 ring-amber-200">
+            <p className="min-w-0 flex-1 text-sm text-amber-900">
+              Stai vedendo <b>{demoCount} clienti di esempio</b>. Vuoi toglierli? I tuoi clienti restano.
+            </p>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                const n = useStore.getState().removeDemo()
+                useUi.getState().toast(`Eliminati ${n} clienti di esempio`)
+              }}
+            >
+              Elimina esempi
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Prossima mossa */}
       {top && (
@@ -356,9 +377,11 @@ function Welcome({ name }: { name: string | null }) {
         >
           Aggiungi il primo cliente
         </Button>
-        <Button variant="secondary" className="h-12 text-[15px]" onClick={loadDemo}>
-          Prova con dati di esempio
-        </Button>
+        {!cloudEnabled && (
+          <Button variant="secondary" className="h-12 text-[15px]" onClick={loadDemo}>
+            Prova con dati di esempio
+          </Button>
+        )}
       </div>
     </div>
   )

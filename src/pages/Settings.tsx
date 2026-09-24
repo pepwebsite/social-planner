@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight, Download, Loader2, LogOut, PlayCircle, RotateCcw, Smartphone, Sparkles, Upload } from 'lucide-react'
-import { snapshot, useStore, type DataSnapshot } from '../store'
+import { isDemoClient, snapshot, useStore, type DataSnapshot } from '../store'
 import { useUi } from '../ui'
 import { aiStatus, type AiStatus } from '../lib/ai'
 import { providerById } from '../lib/providers'
@@ -9,6 +9,7 @@ import { cloudEnabled } from '../lib/supabase'
 import { signOutAndClear } from '../lib/sync'
 import { displayName, useAuth } from '../auth'
 import { SyncBadge } from '../components/AuthGate'
+import { RecoveryCard } from '../components/Recovery'
 import { openTutorial } from '../components/Tutorial'
 import { todayISO } from '../lib/dates'
 import { PageHeader } from '../components/Layout'
@@ -24,6 +25,7 @@ export function Settings() {
   }
   const toast = useUi((s) => s.toast)
   const user = useAuth((s) => s.user)
+  const demoCount = useStore((s) => s.clients.filter(isDemoClient).length)
   const fileRef = useRef<HTMLInputElement>(null)
   const [ai, setAi] = useState<AiStatus | null>(null)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -99,6 +101,26 @@ export function Settings() {
           </Card>
         )}
 
+        <RecoveryCard />
+
+        {demoCount > 0 && (
+          <Card className="flex flex-wrap items-center gap-3 p-5">
+            <div className="min-w-0 flex-1 basis-60">
+              <p className="font-bold">Dati di esempio</p>
+              <p className="text-sm text-stone-500">Ci sono {demoCount} clienti di esempio (Sigma Via Roma, Bistrot Luna, FitZone). Puoi toglierli: i tuoi clienti restano.</p>
+            </div>
+            <Button
+              variant="danger"
+              onClick={() => {
+                const n = useStore.getState().removeDemo()
+                toast(`Eliminati ${n} clienti di esempio`)
+              }}
+            >
+              Elimina dati di esempio
+            </Button>
+          </Card>
+        )}
+
         <Card className="p-5">
           <p className="font-bold">I tuoi dati</p>
           <p className="mt-0.5 text-sm text-stone-500">
@@ -166,11 +188,11 @@ export function Settings() {
         </Card>
 
         <Card className="flex flex-wrap items-center gap-3 p-5">
-          <div className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1 basis-60">
             <p className="font-bold">Ricomincia</p>
             <p className="text-sm text-stone-500">Cancella tutti i dati da questo browser. Scarica prima un backup.</p>
           </div>
-          {counts.c === 0 && (
+          {counts.c === 0 && !cloudEnabled && (
             <Button variant="secondary" onClick={loadDemo}>
               Carica dati di esempio
             </Button>

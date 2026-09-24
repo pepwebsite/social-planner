@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { supabase } from './supabase'
 import { snapshot, useStore } from '../store'
 import { useAi } from '../aiStore'
+import { useUi } from '../ui'
 
 /**
  * Sincronizzazione con il database: al login scarica il workspace dell'utente, poi salva
@@ -60,7 +61,74 @@ function localPayload() {
   }
 }
 
+/* ------------------------------------------------ Copie di sicurezza ---- */
+
+const SAFETY_KEY = 'regia-safety'
+const SAFETY_MAX = 8
+
+export interface SafetyCopy {
+  at: string
+  reason: string
+  owner: string | null
+  clients: number
+  posts: number
+  data: DataPayload
+}
+
+type DataPayload = Record<string, unknown> & { clients?: { id: string }[]; posts?: { id: string }[] }
+
+export function safetyCopies(): SafetyCopy[] {
+  try {
+    return JSON.parse(ls.get(SAFETY_KEY) ?? '[]') as SafetyCopy[]
+  } catch {
+    return []
+  }
+}
+
+/** Conserva nel browser una copia dei dati locali prima di sostituirli */
+function saveSafetyCopy(reason: string, owner: string | null) {
+  const data = localPayload().data as DataPayload
+  const clients = data.clients?.length ?? 0
+  const posts = data.posts?.length ?? 0
+  if (!clients && !posts) return
+  const list = safetyCopies()
+  // Evita doppioni identici consecutivi
+  if (list[0] && JSON.stringify(list[0].data) === JSON.stringify(data)) return
+  list.unshift({ at: new Date().toISOString(), reason, owner, clients, posts, data })
+  ls.set(SAFETY_KEY, JSON.stringify(list.slice(0, SAFETY_MAX)))
+}
+
+/** true se la copia locale contiene clienti o contenuti che il remoto non ha */
+function localHasExtra(remote: Record<string, unknown>) {
+  const local = localPayload().data as DataPayload
+  const ids = (arr: unknown) => new Set(((arr as { id: string }[] | undefined) ?? []).map((x) => x.id))
+  const rc = ids(remote.clients)
+  const rp = ids(remote.posts)
+  return (local.clients ?? []).some((c) => !rc.has(c.id)) || (local.posts ?? []).some((p) => !rp.has(p.id))
+}
+
+/** Unisce due versioni dei dati senza perdere nulla: per gli elementi presenti in entrambe vince `prefer` */
+export function mergeData(remote: Record<string, unknown>, local: Record<string, unknown>, prefer: 'remote' | 'local') {
+  const merged: Record<string, unknown> = { ...remote }
+  for (const key of ['clients', 'posts', 'events', 'tasks', 'externalCalendars']) {
+    const r = ((remote[key] as { id: string }[] | undefined) ?? []).slice()
+    const l = (local[key] as { id: string }[] | undefined) ?? []
+    const byId = new Map(r.map((x) => [x.id, x]))
+    for (const item of l) {
+      if (!byId.has(item.id)) byId.set(item.id, item)
+      else if (prefer === 'local') byId.set(item.id, item)
+    }
+    merged[key] = [...byId.values()]
+  }
+  merged.lastWorked = { ...((remote.lastWorked as object) ?? {}), ...((local.lastWorked as object) ?? {}) }
+  merged.onboarded = Boolean(remote.onboarded || local.onboarded)
+  merged.tutorialSeen = Boolean(remote.tutorialSeen || local.tutorialSeen)
+  return merged
+}
+
 function applyRemote(row: RemoteRow) {
+  // Prima di sostituire, se qui ci sono clienti o contenuti che il remoto non ha, ne tengo una copia
+  if (localHasExtra(row.data ?? {})) saveSafetyCopy('Prima di caricare i dati dell’account', ls.get(OWNER_KEY))
   applyingRemote = true
   const d = (row.data ?? {}) as Record<string, unknown>
   useStore.setState({
@@ -126,8 +194,9 @@ export async function startSync(uid: string) {
   if (!supabase) return
   stopSync()
   const owner = ls.get(OWNER_KEY)
-  // La copia locale appartiene a un altro utente: non va né mostrata né caricata
+  // La copia locale appartiene a un altro utente: non va né mostrata né caricata (ma resta una copia di sicurezza)
   if (owner && owner !== uid) {
+    saveSafetyCopy('Dati di un altro account su questo dispositivo', owner)
     useStore.getState().resetAll()
     useAi.setState({ entries: {}, activeId: null })
     ls.del(DIRTY_KEY)
@@ -138,14 +207,23 @@ export async function startSync(uid: string) {
   if (error) throw new Error('Impossibile caricare i tuoi dati. Controlla la connessione e riprova.')
   const row = data as RemoteRow | null
   const localUnsaved = owner === uid && ls.get(DIRTY_KEY) === '1'
-  const localHasData = useStore.getState().clients.length > 0
+  const local = localPayload().data as DataPayload
+  const localHasData = (local.clients?.length ?? 0) > 0 || (local.posts?.length ?? 0) > 0
 
-  if (hasData(row) && !localUnsaved) {
-    applyRemote(row!)
-  } else if (localUnsaved || (!owner && localHasData) || !hasData(row)) {
-    // Primo accesso (i dati usati prima del login vengono portati nell'account) o modifiche non ancora salvate
+  if (!hasData(row)) {
+    // Account ancora vuoto: ci porto i dati di questo dispositivo
     ls.set(OWNER_KEY, uid)
     await saveNow()
+  } else if ((localUnsaved || !owner) && localHasData && localHasExtra(row!.data ?? {})) {
+    // Dati del dispositivo non ancora nell'account (uso prima del login o modifiche offline): li unisco, senza perdere nulla
+    saveSafetyCopy('Prima di unire i dati del dispositivo all’account', owner)
+    const merged = mergeData(row!.data ?? {}, local, localUnsaved ? 'local' : 'remote')
+    applyRemote({ ...row!, data: merged })
+    ls.set(OWNER_KEY, uid)
+    await saveNow()
+    useUi.getState().toast('Ho unito al tuo account i dati che erano su questo dispositivo')
+  } else {
+    applyRemote(row!)
   }
   ls.set(OWNER_KEY, uid)
   useSync.setState({ status: 'saved', savedAt: lastRemoteAt })
@@ -188,4 +266,12 @@ export async function signOutAndClear() {
   ls.del(OWNER_KEY)
   ls.del(DIRTY_KEY)
   useSync.setState({ status: 'idle', savedAt: null })
+}
+
+/** Ripristina una copia: "unisci" recupera ciò che manca senza togliere nulla, "sostituisci" torna esattamente a quella versione */
+export function restoreSnapshot(data: Record<string, unknown>, mode: 'unisci' | 'sostituisci') {
+  saveSafetyCopy('Prima di un ripristino', ls.get(OWNER_KEY))
+  const current = localPayload().data
+  const next = mode === 'unisci' ? mergeData(current, data, 'remote') : data
+  useStore.getState().importData(next as never)
 }
