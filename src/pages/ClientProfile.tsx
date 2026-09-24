@@ -113,13 +113,16 @@ export function ClientProfile({ client }: { client: Client }) {
                 ))}
               </Select>
               <Input type="time" value={s.time} onChange={(e) => setSlot(s.id, { time: e.target.value })} className="h-9" />
-              <Select value={s.platform} onChange={(e) => setSlot(s.id, { platform: e.target.value as Platform })} className="h-9">
+              <div className="relative">
+              <PlatformBadge platform={s.platform} size={18} className="pointer-events-none absolute top-1/2 left-2.5 -translate-y-1/2" />
+              <Select value={s.platform} onChange={(e) => setSlot(s.id, { platform: e.target.value as Platform })} className="h-9 pl-9">
                 {PLATFORMS.map((p) => (
                   <option key={p} value={p}>
                     {PLATFORM_META[p].label}
                   </option>
                 ))}
               </Select>
+              </div>
               <Select value={s.format} onChange={(e) => setSlot(s.id, { format: e.target.value as Format })} className="h-9">
                 {FORMATS.map((f) => (
                   <option key={f} value={f}>

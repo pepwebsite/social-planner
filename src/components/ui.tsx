@@ -2,6 +2,7 @@ import { useEffect, type ButtonHTMLAttributes, type InputHTMLAttributes, type Re
 import { X } from 'lucide-react'
 import type { Client, Platform, PostStatus } from '../types'
 import { PLATFORM_META, STATUS_META } from '../lib/meta'
+import { PlatformIcon } from './PlatformIcon'
 
 export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(' ')
 
@@ -100,15 +101,10 @@ export function StatusPill({ status, className }: { status: PostStatus; classNam
   )
 }
 
-export function PlatformBadge({ platform, className }: { platform: Platform; className?: string }) {
-  const m = PLATFORM_META[platform]
+export function PlatformBadge({ platform, className, size = 20 }: { platform: Platform; className?: string; size?: number }) {
   return (
-    <span
-      className={cx('inline-flex h-5 min-w-5 items-center justify-center rounded-md px-1 text-[10px] font-bold text-white', className)}
-      style={{ background: m.color }}
-      title={m.label}
-    >
-      {m.short}
+    <span className={cx('inline-flex shrink-0 items-center justify-center', className)} title={PLATFORM_META[platform].label}>
+      <PlatformIcon platform={platform} size={size} />
     </span>
   )
 }

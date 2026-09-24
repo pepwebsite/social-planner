@@ -80,6 +80,14 @@ export interface ClientEvent {
   createdAt: string
 }
 
+/** Calendario esterno in sola lettura (es. Google Calendar tramite indirizzo iCal segreto) */
+export interface ExternalCalendar {
+  id: string
+  name: string
+  url: string
+  color: string
+}
+
 export interface Task {
   id: string
   clientId: string | null

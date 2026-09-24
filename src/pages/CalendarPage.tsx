@@ -6,11 +6,13 @@ import type { Client, ClientEvent, Post, PostStatus } from '../types'
 import { useStore } from '../store'
 import { useUi } from '../ui'
 import { capitalize, fmt, todayISO, toISO, weekDays, weekLabel, weekStart } from '../lib/dates'
-import { FORMAT_LABEL, PLATFORM_META, STATUSES, STATUS_META, WEEKDAYS_SHORT } from '../lib/meta'
+import { FORMAT_LABEL, STATUSES, STATUS_META, WEEKDAYS_SHORT } from '../lib/meta'
 import { slotsForWeek, slotCovered, type SlotInstance } from '../lib/insights'
 import { PageHeader, QuickCreate } from '../components/Layout'
+import { GoogleCalendarIcon, GoogleCalendarModal } from '../components/GoogleCalendarModal'
+import { useExternalItems, type ExternalEntry } from '../lib/calendarLinks'
 import { PostCard } from '../components/PostCard'
-import { ClientAvatar, EmptyState, IconButton, Select, cx } from '../components/ui'
+import { ClientAvatar, EmptyState, IconButton, PlatformBadge, Select, cx } from '../components/ui'
 
 type View = 'mese' | 'settimana' | 'clienti' | 'agenda'
 
@@ -48,6 +50,8 @@ export function CalendarPage() {
   const allClients = useStore((s) => s.clients)
   const posts = useStore((s) => s.posts)
   const events = useStore((s) => s.events)
+  const [gcal, setGcal] = useState(false)
+  const { items: external, errors: extErrors } = useExternalItems()
 
   const setView = (v: View) => {
     setViewState(v)
@@ -102,11 +106,27 @@ export function CalendarPage() {
       : `${fmt(wStart, 'd MMM')} – ${fmt(wEnd, 'd MMM')}`
   const isCurrent = monthMode ? isSameMonth(anchor, new Date()) : weekStart(new Date()).getTime() === wStart.getTime()
 
-  const ctx: ViewProps = { clients, visible, posts: filteredPosts, events: filteredEvents, missing, anchor, selected, setSelected }
+  const ctx: ViewProps = { clients, visible, posts: filteredPosts, events: filteredEvents, missing, anchor, selected, setSelected, external }
+  const calendars = useStore((s) => s.externalCalendars)
 
   return (
     <div className="pb-10">
-      <PageHeader title="Calendario" subtitle="Tutti i clienti, nel formato che preferisci." actions={<div className="hidden md:block"><QuickCreate /></div>} />
+      <PageHeader title="Calendario" subtitle="Tutti i clienti, nel formato che preferisci." actions={
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setGcal(true)}
+              title="Collega Google Calendar"
+              className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-3 text-sm font-semibold text-stone-700 shadow-soft ring-1 ring-stone-900/5 transition hover:bg-stone-50"
+            >
+              <GoogleCalendarIcon size={20} />
+              Google Calendar
+            </button>
+            <div className="hidden md:block">
+              <QuickCreate />
+            </div>
+          </div>
+        } />
 
       {/* Barra comandi */}
       <div className="flex flex-col gap-3 px-4 pb-3 md:flex-row md:items-center md:px-8">
@@ -177,6 +197,13 @@ export function CalendarPage() {
         })}
       </div>
 
+      {Object.entries(extErrors).map(([id, msg]) => (
+        <p key={id} className="mx-4 mb-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-900 ring-1 ring-amber-200 md:mx-8">
+          Non riesco a leggere «{calendars.find((c) => c.id === id)?.name ?? 'Google Calendar'}»: {msg}
+        </p>
+      ))}
+      {gcal && <GoogleCalendarModal onClose={() => setGcal(false)} />}
+
       <div className="px-4 md:px-8">
         {clients.length === 0 ? (
           <EmptyState icon={<CalendarDays size={22} />} title="Nessun cliente" text="Aggiungi un cliente per iniziare a pianificare." />
@@ -200,6 +227,11 @@ export function CalendarPage() {
         <span className="inline-flex items-center gap-1.5">
           <span className="size-2 rounded-full border border-dashed border-rose-400" /> Uscita da coprire
         </span>
+        {calendars.length > 0 && (
+          <span className="inline-flex items-center gap-1.5">
+            <GoogleCalendarIcon size={12} /> Impegni Google Calendar
+          </span>
+        )}
       </div>
     </div>
   )
@@ -216,6 +248,7 @@ interface ViewProps {
   anchor: Date
   selected: string
   setSelected: (d: string) => void
+  external: ExternalEntry[]
 }
 
 const byTime = (a: Post, b: Post) => a.time.localeCompare(b.time)
@@ -260,6 +293,21 @@ function EventChip({ e, compact }: { e: ClientEvent; compact?: boolean }) {
   )
 }
 
+function ExternalChip({ x, compact }: { x: ExternalEntry; compact?: boolean }) {
+  const when = x.allDay ? 'Tutto il giorno' : `${x.time}${x.endTime ? `–${x.endTime}` : ''}`
+  return (
+    <div
+      title={`${x.title} · ${when}${x.location ? ` · ${x.location}` : ''} (${x.calendar.name})`}
+      className={cx('flex w-full items-center gap-1.5 rounded-lg bg-stone-100 text-left text-stone-600', compact ? 'px-1.5 py-0.5 text-[10px]' : 'px-2 py-1.5 text-xs')}
+      style={{ boxShadow: `inset 3px 0 0 ${x.calendar.color}` }}
+    >
+      <GoogleCalendarIcon size={compact ? 10 : 12} className="shrink-0" />
+      {!x.allDay && <span className="shrink-0 font-semibold">{x.time}</span>}
+      <span className="truncate">{x.title}</span>
+    </div>
+  )
+}
+
 function MissingChip({ m, date, withClient }: { m: Missing; date: string; withClient?: boolean }) {
   return (
     <button
@@ -269,8 +317,9 @@ function MissingChip({ m, date, withClient }: { m: Missing; date: string; withCl
       title="Uscita prevista ma ancora senza contenuto: tocca per crearlo"
     >
       <Plus size={11} className="shrink-0" />
+      <PlatformBadge platform={m.slot.platform} size={14} />
       <span className="truncate">
-        {m.slot.time} {PLATFORM_META[m.slot.platform].short} {FORMAT_LABEL[m.slot.format]}
+        {m.slot.time} {FORMAT_LABEL[m.slot.format]}
         {withClient && ` · ${m.client.name}`}
       </span>
     </button>
@@ -278,11 +327,12 @@ function MissingChip({ m, date, withClient }: { m: Missing; date: string; withCl
 }
 
 /** Elenco dei contenuti di un giorno (usato sotto mese e settimana su telefono) */
-function DayList({ date, clients, posts, events, missing }: { date: string } & Pick<ViewProps, 'clients' | 'posts' | 'events' | 'missing'>) {
+function DayList({ date, clients, posts, events, missing, external }: { date: string } & Pick<ViewProps, 'clients' | 'posts' | 'events' | 'missing' | 'external'>) {
   const dayPosts = posts.filter((p) => p.date === date).sort(byTime)
   const dayEvents = events.filter((e) => e.date === date)
   const dayMissing = missing.get(date) ?? []
-  const empty = !dayPosts.length && !dayEvents.length && !dayMissing.length
+  const dayExt = external.filter((x) => x.date === date)
+  const empty = !dayPosts.length && !dayEvents.length && !dayMissing.length && !dayExt.length
   return (
     <div className="mt-4">
       <div className="mb-2 flex items-center justify-between">
@@ -302,6 +352,9 @@ function DayList({ date, clients, posts, events, missing }: { date: string } & P
         {dayEvents.map((e) => (
           <EventChip key={e.id} e={e} />
         ))}
+        {dayExt.map((x) => (
+          <ExternalChip key={x.id} x={x} />
+        ))}
         {dayPosts.map((p) => (
           <PostCard key={p.id} post={p} client={clientOf(clients, p.clientId)} showClient />
         ))}
@@ -317,7 +370,7 @@ function DayList({ date, clients, posts, events, missing }: { date: string } & P
 /* ------------------------------------------------------------------- Mese ---- */
 
 function MonthView(props: ViewProps) {
-  const { clients, posts, events, missing, anchor, selected, setSelected } = props
+  const { clients, posts, events, missing, anchor, selected, setSelected, external } = props
   const { over, drop } = useDropHandlers()
   const start = weekStart(startOfMonth(anchor))
   const end = addDays(weekStart(endOfMonth(anchor)), 6)
@@ -342,6 +395,7 @@ function MonthView(props: ViewProps) {
             const dayPosts = posts.filter((p) => p.date === date).sort(byTime)
             const dayEvents = events.filter((e) => e.date === date)
             const dayMissing = missing.get(date) ?? []
+            const dayExt = external.filter((x) => x.date === date)
             const isSel = date === selected
             const shown = dayPosts.slice(0, 3)
             return (
@@ -370,6 +424,9 @@ function MonthView(props: ViewProps) {
                 {/* Telefono: pallini */}
                 <div className="flex flex-wrap gap-0.5 md:hidden">
                   {dayEvents.length > 0 && <span className="size-1.5 rounded-full bg-pink-500" />}
+                  {dayExt.slice(0, 3).map((x) => (
+                    <span key={x.id} className="size-1.5 rounded-full" style={{ background: x.calendar.color }} />
+                  ))}
                   {dayPosts.slice(0, 6).map((p) => (
                     <span key={p.id} className={cx('size-1.5 rounded-full', STATUS_META[p.status].dot)} />
                   ))}
@@ -381,6 +438,10 @@ function MonthView(props: ViewProps) {
                   {dayEvents.slice(0, 1).map((e) => (
                     <EventChip key={e.id} e={e} compact />
                   ))}
+                  {dayExt.slice(0, 2).map((x) => (
+                    <ExternalChip key={x.id} x={x} compact />
+                  ))}
+                  {dayExt.length > 2 && <p className="px-1 text-[10px] font-semibold text-stone-400">+{dayExt.length - 2} impegni</p>}
                   {shown.map((p) => {
                     const c = clientOf(clients, p.clientId)
                     return (
@@ -422,7 +483,7 @@ function MonthView(props: ViewProps) {
 /* -------------------------------------------------------------- Settimana ---- */
 
 function WeekView(props: ViewProps) {
-  const { clients, posts, events, missing, anchor, selected, setSelected } = props
+  const { clients, posts, events, missing, anchor, selected, setSelected, external } = props
   const { over, drop } = useDropHandlers()
   const days = weekDays(weekStart(anchor))
   const today = todayISO()
@@ -451,6 +512,7 @@ function WeekView(props: ViewProps) {
                 <span className={cx('text-[10px] font-bold uppercase', active ? 'text-white/80' : 'text-stone-400')}>{fmt(d, 'EEEEEE')}</span>
                 <span className="text-base font-extrabold">{d.getDate()}</span>
                 <span className="flex h-1.5 gap-0.5">
+                  {external.some((x) => x.date === date) && <span className={cx('size-1.5 rounded-full', active ? 'bg-white/60' : 'bg-stone-400')} />}
                   {n > 0 && <span className={cx('size-1.5 rounded-full', active ? 'bg-white' : 'bg-brand-500')} />}
                   {m > 0 && <span className={cx('size-1.5 rounded-full', active ? 'bg-rose-200' : 'bg-rose-400')} />}
                 </span>
@@ -489,6 +551,11 @@ function WeekView(props: ViewProps) {
                   {dayEvents.map((e) => (
                     <EventChip key={e.id} e={e} />
                   ))}
+                  {external
+                    .filter((x) => x.date === date)
+                    .map((x) => (
+                      <ExternalChip key={x.id} x={x} />
+                    ))}
                   {dayPosts.map((p) => (
                     <PostCard key={p.id} post={p} client={clientOf(clients, p.clientId)} showClient draggable className="p-2 pl-2.5" />
                   ))}
@@ -624,7 +691,7 @@ function ClientsView({ visible, posts, events, missing, anchor }: ViewProps) {
 
 /* ----------------------------------------------------------------- Agenda ---- */
 
-function AgendaView({ clients, posts, events, missing, anchor }: ViewProps) {
+function AgendaView({ clients, posts, events, missing, anchor, external }: ViewProps) {
   const today = todayISO()
   const from = toISO(startOfMonth(anchor))
   const to = toISO(endOfMonth(anchor))
@@ -632,6 +699,7 @@ function AgendaView({ clients, posts, events, missing, anchor }: ViewProps) {
   posts.forEach((p) => p.date >= from && p.date <= to && dates.add(p.date))
   events.forEach((e) => e.date >= from && e.date <= to && dates.add(e.date))
   missing.forEach((_, d) => d >= from && d <= to && dates.add(d))
+  external.forEach((x) => x.date >= from && x.date <= to && dates.add(x.date))
   const sorted = [...dates].sort()
 
   if (sorted.length === 0) {
@@ -654,6 +722,7 @@ function AgendaView({ clients, posts, events, missing, anchor }: ViewProps) {
     const dayPosts = posts.filter((p) => p.date === date).sort(byTime)
     const dayEvents = events.filter((e) => e.date === date)
     const dayMissing = missing.get(date) ?? []
+    const dayExt = external.filter((x) => x.date === date)
     const past = date < today
     blocks.push(
       <section key={date} className={cx('flex gap-3', past && 'opacity-60')}>
@@ -664,6 +733,9 @@ function AgendaView({ clients, posts, events, missing, anchor }: ViewProps) {
         <div className="grid min-w-0 flex-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
           {dayEvents.map((e) => (
             <EventChip key={e.id} e={e} />
+          ))}
+          {dayExt.map((x) => (
+            <ExternalChip key={x.id} x={x} />
           ))}
           {dayPosts.map((p) => (
             <PostCard key={p.id} post={p} client={clientOf(clients, p.clientId)} showClient />

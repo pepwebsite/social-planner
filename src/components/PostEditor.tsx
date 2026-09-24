@@ -7,7 +7,9 @@ import { FORMATS, FORMAT_LABEL, PLATFORMS, PLATFORM_META, STATUSES, STATUS_META 
 import { capitalize, fmt, relativeDay } from '../lib/dates'
 import { daysWaiting } from '../lib/insights'
 import { generateCopy } from '../lib/ai'
-import { Button, ClientAvatar, Drawer, Field, IconButton, Input, Select, Textarea, cx } from './ui'
+import { googleEventLink } from '../lib/calendarLinks'
+import { GoogleCalendarIcon } from './GoogleCalendarModal'
+import { Button, ClientAvatar, Drawer, Field, IconButton, Input, PlatformBadge, Select, Textarea, cx } from './ui'
 
 const QUICK_PROMPTS = ['Più breve', 'Più coinvolgente', 'Aggiungi una call to action', 'Adatta per una story', 'Meno emoji']
 
@@ -194,15 +196,26 @@ function EditorInner() {
           <Field label="Ora">
             <Input type="time" value={form.time} onChange={(e) => set('time', e.target.value)} />
           </Field>
-          <Field label="Piattaforma">
-            <Select value={form.platform} onChange={(e) => set('platform', e.target.value as Post['platform'])}>
+          <div className="col-span-2">
+            <p className="mb-1.5 text-[13px] font-semibold text-stone-700">Piattaforma</p>
+            <div className="grid grid-cols-5 gap-1.5">
               {PLATFORMS.map((p) => (
-                <option key={p} value={p}>
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => set('platform', p)}
+                  aria-pressed={form.platform === p}
+                  className={cx(
+                    'flex flex-col items-center gap-1 rounded-xl bg-white py-2 text-[11px] font-semibold ring-1 transition',
+                    form.platform === p ? 'text-stone-900 shadow-soft ring-2 ring-brand-500' : 'text-stone-500 ring-stone-200 hover:ring-stone-300',
+                  )}
+                >
+                  <PlatformBadge platform={p} size={26} />
                   {PLATFORM_META[p].label}
-                </option>
+                </button>
               ))}
-            </Select>
-          </Field>
+            </div>
+          </div>
           <Field label="Formato">
             <Select value={form.format} onChange={(e) => set('format', e.target.value as Post['format'])}>
               {FORMATS.map((f) => (
@@ -332,6 +345,23 @@ function EditorInner() {
               <Copy size={17} />
             </IconButton>
           </>
+        )}
+        {!isNew && form.date && (
+          <a
+            href={googleEventLink({
+              title: `${client?.name ?? ''} · ${PLATFORM_META[form.platform].label} ${FORMAT_LABEL[form.format]}${form.title ? `: ${form.title}` : ''}`,
+              date: form.date,
+              time: form.time,
+              details: form.copy,
+            })}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Aggiungi a Google Calendar"
+            title="Aggiungi a Google Calendar"
+            className="inline-flex size-9 items-center justify-center rounded-xl hover:bg-stone-900/5"
+          >
+            <GoogleCalendarIcon size={18} />
+          </a>
         )}
         <IconButton
           label="Copia testo"

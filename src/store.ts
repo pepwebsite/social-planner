@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { addDays, format } from 'date-fns'
-import type { Client, ClientEvent, Post, PostStatus, Task } from './types'
+import type { Client, ClientEvent, ExternalCalendar, Post, PostStatus, Task } from './types'
 import { CLIENT_COLORS } from './lib/meta'
 import { fromISO, nextOccurrence, toISO } from './lib/dates'
 
@@ -20,6 +20,7 @@ export interface DataSnapshot {
   events: ClientEvent[]
   tasks: Task[]
   lastWorked: Record<string, string>
+  externalCalendars: ExternalCalendar[]
 }
 
 interface State extends DataSnapshot {
@@ -50,6 +51,9 @@ interface State extends DataSnapshot {
   startSession: (clientId: string, minutes: number) => void
   endSession: () => void
   touchClient: (clientId: string) => void
+
+  addExternalCalendar: (c: Omit<ExternalCalendar, 'id'>) => void
+  removeExternalCalendar: (id: string) => void
 
   importData: (d: DataSnapshot) => void
   loadDemo: () => void
@@ -138,7 +142,7 @@ function eventTasks(e: ClientEvent): Task[] {
   return tasks
 }
 
-const empty: DataSnapshot = { clients: [], posts: [], events: [], tasks: [], lastWorked: {} }
+const empty: DataSnapshot = { clients: [], posts: [], events: [], tasks: [], lastWorked: {}, externalCalendars: [] }
 
 export const useStore = create<State>()(
   persist(
@@ -266,6 +270,9 @@ export const useStore = create<State>()(
       endSession: () => set({ session: null }),
       touchClient: (clientId) => set((s) => ({ lastWorked: { ...s.lastWorked, [clientId]: now() } })),
 
+      addExternalCalendar: (c) => set((s) => ({ externalCalendars: [...s.externalCalendars, { ...c, id: uid() }] })),
+      removeExternalCalendar: (id) => set((s) => ({ externalCalendars: s.externalCalendars.filter((c) => c.id !== id) })),
+
       importData: (d) =>
         set({
           clients: d.clients ?? [],
@@ -273,6 +280,7 @@ export const useStore = create<State>()(
           events: d.events ?? [],
           tasks: d.tasks ?? [],
           lastWorked: d.lastWorked ?? {},
+          externalCalendars: d.externalCalendars ?? [],
           session: null,
           onboarded: true,
         }),
@@ -285,8 +293,8 @@ export const useStore = create<State>()(
 )
 
 export const snapshot = (): DataSnapshot => {
-  const { clients, posts, events, tasks, lastWorked } = useStore.getState()
-  return { clients, posts, events, tasks, lastWorked }
+  const { clients, posts, events, tasks, lastWorked, externalCalendars } = useStore.getState()
+  return { clients, posts, events, tasks, lastWorked, externalCalendars }
 }
 
 /* ---------------------------------------------------------------- Demo ---- */
@@ -408,5 +416,5 @@ function demoData(): DataSnapshot {
     ...eventTasks(eventLuna),
   ]
 
-  return { clients: [sigma, luna, fit], posts, events: [eventLuna], tasks, lastWorked: { [sigma.id]: addDays(new Date(), -1).toISOString() } }
+  return { clients: [sigma, luna, fit], posts, events: [eventLuna], tasks, lastWorked: { [sigma.id]: addDays(new Date(), -1).toISOString() }, externalCalendars: [] }
 }

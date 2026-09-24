@@ -4,6 +4,8 @@ import type { ClientEvent, Influencer } from '../types'
 import { uid, useStore } from '../store'
 import { useUi } from '../ui'
 import { todayISO } from '../lib/dates'
+import { googleEventLink } from '../lib/calendarLinks'
+import { GoogleCalendarIcon } from './GoogleCalendarModal'
 import { Button, Field, IconButton, Input, Modal, Select, Textarea } from './ui'
 
 export function EventEditor() {
@@ -72,6 +74,17 @@ function Inner() {
             >
               Elimina
             </Button>
+          )}
+          {existing && (
+            <a
+              href={googleEventLink({ title: `🎉 ${form.name}`, date: form.date, time: form.time || undefined, minutes: 120, details: form.notes, location: form.location })}
+              target="_blank"
+              rel="noreferrer"
+              title="Aggiungi a Google Calendar"
+              className="inline-flex h-10 items-center gap-1.5 rounded-xl px-3 text-sm font-semibold text-stone-600 hover:bg-stone-900/5"
+            >
+              <GoogleCalendarIcon size={17} /> <span className="hidden sm:inline">Google Calendar</span>
+            </a>
           )}
           <Button variant="ghost" onClick={close}>
             Annulla

@@ -69,6 +69,7 @@ function applyRemote(row: RemoteRow) {
     events: (d.events as never) ?? [],
     tasks: (d.tasks as never) ?? [],
     lastWorked: (d.lastWorked as never) ?? {},
+    externalCalendars: (d.externalCalendars as never) ?? [],
     onboarded: Boolean(d.onboarded),
     tutorialSeen: Boolean(d.tutorialSeen),
     session: null,
