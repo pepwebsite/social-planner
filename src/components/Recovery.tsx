@@ -8,7 +8,6 @@ import { cloudEnabled, supabase } from '../lib/supabase'
 import { restoreSnapshot, safetyCopies, type SafetyCopy } from '../lib/sync'
 import { fmt } from '../lib/dates'
 import { Button, Card, Modal } from './ui'
-import { DbSetupHelp } from './DbSetupHelp'
 
 interface CloudVersion {
   id: number
@@ -63,7 +62,7 @@ export function RecoveryCard() {
             <Cloud size={14} /> Nel tuo account
           </p>
           {cloudError === 'setup' ? (
-            <DbSetupHelp what="La cronologia delle copie" tone="amber" />
+            <p className="text-sm text-stone-500">La cronologia non è disponibile in questo momento.</p>
           ) : cloudError ? (
             <p className="text-sm text-stone-500">Impossibile leggere la cronologia adesso.</p>
           ) : versions === null ? (

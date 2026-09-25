@@ -7,7 +7,6 @@ import { cloudEnabled, supabase } from '../lib/supabase'
 import { feedUrls, fetchExternal, newFeedToken } from '../lib/calendarLinks'
 import { GCAL_PATH } from './brandPaths'
 import { Button, Field, Input, Modal, Segmented, cx } from './ui'
-import { DbSetupHelp } from './DbSetupHelp'
 
 export function GoogleCalendarIcon({ size = 18, className }: { size?: number; className?: string }) {
   return (
@@ -112,7 +111,7 @@ function ExportPanel() {
       </p>
 
       {error === SETUP ? (
-        <DbSetupHelp what="Il link del calendario" />
+        <p className="rounded-xl bg-amber-50 px-3 py-2.5 text-sm text-amber-900 ring-1 ring-amber-200">Il link del calendario non è disponibile in questo momento. Riprova tra poco.</p>
       ) : (
         error && <p className="rounded-xl bg-rose-50 px-3 py-2.5 text-sm text-rose-700 ring-1 ring-rose-200">{error}</p>
       )}

@@ -20,7 +20,7 @@ grant select on public.workspace_history to authenticated;
 
 drop policy if exists "cronologia: lettura propria" on public.workspace_history;
 create policy "cronologia: lettura propria" on public.workspace_history
-  for select using (auth.uid() = user_id);
+  for select using ((select auth.uid()) = user_id);
 
 create or replace function public.jsonb_len(v jsonb)
 returns int
@@ -71,3 +71,7 @@ drop trigger if exists workspace_snapshot on public.workspaces;
 create trigger workspace_snapshot
   before update on public.workspaces
   for each row execute function public.snapshot_workspace();
+
+-- Funzioni interne: non richiamabili dall'esterno
+revoke execute on function public.snapshot_workspace() from public, anon, authenticated;
+revoke execute on function public.jsonb_len(jsonb) from public, anon;

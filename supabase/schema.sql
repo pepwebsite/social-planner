@@ -29,27 +29,27 @@ alter table public.workspaces enable row level security;
 
 drop policy if exists "profilo: lettura propria" on public.profiles;
 create policy "profilo: lettura propria" on public.profiles
-  for select using (auth.uid() = id);
+  for select using ((select auth.uid()) = id);
 
 drop policy if exists "profilo: modifica propria" on public.profiles;
 create policy "profilo: modifica propria" on public.profiles
-  for update using (auth.uid() = id) with check (auth.uid() = id);
+  for update using ((select auth.uid()) = id) with check ((select auth.uid()) = id);
 
 drop policy if exists "workspace: lettura propria" on public.workspaces;
 create policy "workspace: lettura propria" on public.workspaces
-  for select using (auth.uid() = user_id);
+  for select using ((select auth.uid()) = user_id);
 
 drop policy if exists "workspace: creazione propria" on public.workspaces;
 create policy "workspace: creazione propria" on public.workspaces
-  for insert with check (auth.uid() = user_id);
+  for insert with check ((select auth.uid()) = user_id);
 
 drop policy if exists "workspace: modifica propria" on public.workspaces;
 create policy "workspace: modifica propria" on public.workspaces
-  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  for update using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
 
 drop policy if exists "workspace: eliminazione propria" on public.workspaces;
 create policy "workspace: eliminazione propria" on public.workspaces
-  for delete using (auth.uid() = user_id);
+  for delete using ((select auth.uid()) = user_id);
 
 -- Alla registrazione crea profilo e workspace vuoto
 create or replace function public.handle_new_user()
@@ -72,3 +72,12 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- Le funzioni interne non devono essere richiamabili dall'esterno (avvisi del Security Advisor)
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
+do $$
+begin
+  if exists (select 1 from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public' and p.proname = 'rls_auto_enable') then
+    execute 'revoke execute on function public.rls_auto_enable() from public, anon, authenticated';
+  end if;
+end $$;

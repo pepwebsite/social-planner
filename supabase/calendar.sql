@@ -13,16 +13,16 @@ grant select, insert, update, delete on public.calendar_feeds to authenticated;
 
 drop policy if exists "feed: lettura propria" on public.calendar_feeds;
 create policy "feed: lettura propria" on public.calendar_feeds
-  for select using (auth.uid() = user_id);
+  for select using ((select auth.uid()) = user_id);
 drop policy if exists "feed: creazione propria" on public.calendar_feeds;
 create policy "feed: creazione propria" on public.calendar_feeds
-  for insert with check (auth.uid() = user_id);
+  for insert with check ((select auth.uid()) = user_id);
 drop policy if exists "feed: modifica propria" on public.calendar_feeds;
 create policy "feed: modifica propria" on public.calendar_feeds
-  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  for update using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
 drop policy if exists "feed: eliminazione propria" on public.calendar_feeds;
 create policy "feed: eliminazione propria" on public.calendar_feeds
-  for delete using (auth.uid() = user_id);
+  for delete using ((select auth.uid()) = user_id);
 
 -- Restituisce SOLO i dati da mostrare nel calendario (niente contatti, testi o chiavi AI),
 -- a chi conosce il token segreto del link.
@@ -62,4 +62,4 @@ as $$
 $$;
 
 revoke all on function public.calendar_feed(text) from public;
-grant execute on function public.calendar_feed(text) to anon, authenticated;
+grant execute on function public.calendar_feed(text) to anon;
