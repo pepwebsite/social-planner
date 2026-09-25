@@ -21,6 +21,7 @@ export function authErrorMessage(err: { message?: string; code?: string } | null
   if (code === 'over_email_send_rate_limit' || m.includes('rate limit')) return 'Troppi tentativi in poco tempo. Riprova tra qualche minuto.'
   if (m.includes('invalid email') || code === 'email_address_invalid') return 'Indirizzo email non valido.'
   if (m.includes('same_password') || code === 'same_password') return 'La nuova password deve essere diversa da quella attuale.'
+  if (m.includes('sending') && m.includes('email')) return 'Non riusciamo a inviare l’email in questo momento. Riprova tra qualche minuto.'
   if (m.includes('failed to fetch') || m.includes('network')) return 'Connessione assente: controlla la rete e riprova.'
   return err?.message || 'Qualcosa è andato storto. Riprova.'
 }
