@@ -8,6 +8,7 @@ import { cloudEnabled, supabase } from '../lib/supabase'
 import { restoreSnapshot, safetyCopies, type SafetyCopy } from '../lib/sync'
 import { fmt } from '../lib/dates'
 import { Button, Card, Modal } from './ui'
+import { DbSetupHelp } from './DbSetupHelp'
 
 interface CloudVersion {
   id: number
@@ -62,7 +63,7 @@ export function RecoveryCard() {
             <Cloud size={14} /> Nel tuo account
           </p>
           {cloudError === 'setup' ? (
-            <p className="rounded-xl bg-amber-50 px-3 py-2.5 text-sm text-amber-900 ring-1 ring-amber-200">Cronologia non ancora attiva: esegui il file supabase/history.sql nell’SQL Editor di Supabase.</p>
+            <DbSetupHelp what="La cronologia delle copie" tone="amber" />
           ) : cloudError ? (
             <p className="text-sm text-stone-500">Impossibile leggere la cronologia adesso.</p>
           ) : versions === null ? (

@@ -7,6 +7,7 @@ import { cloudEnabled, supabase } from '../lib/supabase'
 import { feedUrls, fetchExternal, newFeedToken } from '../lib/calendarLinks'
 import { GCAL_PATH } from './brandPaths'
 import { Button, Field, Input, Modal, Segmented, cx } from './ui'
+import { DbSetupHelp } from './DbSetupHelp'
 
 export function GoogleCalendarIcon({ size = 18, className }: { size?: number; className?: string }) {
   return (
@@ -110,7 +111,11 @@ function ExportPanel() {
         I contenuti programmati, gli eventi e le attività di Social Planner compaiono nel tuo <b>Google Calendar</b>, e quindi anche nel calendario del telefono. Si aggiornano da soli.
       </p>
 
-      {error && <p className="rounded-xl bg-rose-50 px-3 py-2.5 text-sm text-rose-700 ring-1 ring-rose-200">{error}</p>}
+      {error === SETUP ? (
+        <DbSetupHelp what="Il link del calendario" />
+      ) : (
+        error && <p className="rounded-xl bg-rose-50 px-3 py-2.5 text-sm text-rose-700 ring-1 ring-rose-200">{error}</p>
+      )}
 
       {!urls ? (
         <Button variant="primary" className="h-11 w-full" disabled={busy} onClick={create} icon={busy ? <Loader2 size={16} className="animate-spin" /> : <GoogleCalendarIcon size={18} className="rounded bg-surface" />}>
@@ -155,9 +160,11 @@ function ExportPanel() {
   )
 }
 
+const SETUP = 'setup'
+
 function dbError(message: string) {
   if (/calendar_feeds|does not exist|schema cache/i.test(message)) {
-    return 'Manca un passaggio nel database: esegui il file supabase/calendar.sql nell’SQL Editor di Supabase.'
+    return SETUP
   }
   return 'Impossibile creare il link. Riprova tra poco.'
 }
