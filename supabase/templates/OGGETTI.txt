@@ -1,0 +1,5 @@
+conferma-registrazione: Conferma il tuo account Social Planner ✨
+recupero-password: Reimposta la password di Social Planner
+cambio-email: Conferma il nuovo indirizzo email
+accesso-rapido: Il tuo link di accesso a Social Planner
+invito: Sei stato invitato su Social Planner
