@@ -16,6 +16,17 @@ export function GoogleCalendarIcon({ size = 18, className }: { size?: number; cl
   )
 }
 
+const isPhone = () => typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+const ADD_BY_URL = 'https://calendar.google.com/calendar/r/settings/addbyurl'
+
+function DesktopTip() {
+  return (
+    <p className="mt-1.5 rounded-lg bg-amber-50 px-2.5 py-2 text-xs text-amber-900 ring-1 ring-amber-200">
+      Se si apre l’app o una pagina semplificata: torna in Chrome, tocca <b>⋮</b> in alto a destra e spunta <b>“Sito desktop”</b> (su iPhone in Safari: <b>aA → Richiedi sito desktop</b>).
+    </p>
+  )
+}
+
 const CAL_COLORS = ['#64748b', '#0ea5e9', '#16a34a', '#f59e0b', '#e11d48', '#7c3aed']
 
 type Tab = 'esporta' | 'importa'
@@ -62,6 +73,7 @@ function ExportPanel() {
   const user = useAuth((s) => s.user)
   const toast = useUi((s) => s.toast)
   const [token, setToken] = useState<string | null>(null)
+  const phone = isPhone()
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -122,12 +134,35 @@ function ExportPanel() {
         </Button>
       ) : (
         <>
+          {phone ? (
+            <ol className="space-y-3">
+              <Step n={1}>
+                <Button className="w-full" icon={<ClipboardCopy size={15} />} onClick={() => navigator.clipboard.writeText(urls.https).then(() => toast('Link copiato: ora apri Google Calendar'))}>
+                  Copia il link del calendario
+                </Button>
+              </Step>
+              <Step n={2}>
+                <a href={ADD_BY_URL} target="_blank" rel="noreferrer" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-surface font-semibold text-stone-800 ring-1 ring-stone-200">
+                  <GoogleCalendarIcon size={20} /> Apri “Aggiungi da URL” <ExternalLink size={14} className="text-stone-400" />
+                </a>
+                <DesktopTip />
+              </Step>
+              <Step n={3}>
+                Incolla il link nel campo <b>“URL del calendario”</b> e tocca <b>“Aggiungi calendario”</b>. Dopo qualche minuto compare anche nell’app Google Calendar.
+              </Step>
+              <Step n={4}>
+                <a href={urls.webcal} className="font-semibold text-brand-600">
+                  Hai un iPhone e usi il Calendario di Apple? Tocca qui.
+                </a>
+              </Step>
+            </ol>
+          ) : (
           <ol className="space-y-3">
             <Step n={1}>
               <a href={urls.google} target="_blank" rel="noreferrer" className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-surface font-semibold text-stone-800 ring-1 ring-stone-200 transition hover:bg-stone-50">
                 <GoogleCalendarIcon size={20} /> Aggiungi a Google Calendar <ExternalLink size={14} className="text-stone-400" />
               </a>
-              <p className="mt-1.5 text-xs text-stone-500">Si apre Google Calendar: conferma con “Aggiungi”. Da computer è più semplice; sul telefono comparirà da solo nell’app Google Calendar.</p>
+              <p className="mt-1.5 text-xs text-stone-500">Si apre Google Calendar: conferma con “Aggiungi”. Poi comparirà da solo anche nell’app Google Calendar del telefono.</p>
             </Step>
             <Step n={2}>
               <a href={urls.webcal} className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-surface font-semibold text-stone-800 ring-1 ring-stone-200 transition hover:bg-stone-50">
@@ -136,6 +171,7 @@ function ExportPanel() {
               <p className="mt-1.5 text-xs text-stone-500">Solo se usi il calendario di Apple invece di Google.</p>
             </Step>
           </ol>
+          )}
 
           <Field label="Oppure copia il link" hint="per Outlook o altre app">
             <div className="flex gap-2">
@@ -202,17 +238,18 @@ function ImportPanel() {
 
       <ol className="space-y-3">
         <Step n={1}>
-          Da computer apri{' '}
+          Apri{' '}
           <a href="https://calendar.google.com/calendar/r/settings" target="_blank" rel="noreferrer" className="font-semibold text-brand-600 hover:underline">
             le impostazioni di Google Calendar
           </a>
           .
+          {isPhone() && <DesktopTip />}
         </Step>
         <Step n={2}>
-          Nel menu a sinistra, sotto <b>“Impostazioni dei miei calendari”</b>, clicca il tuo calendario e poi <b>“Integra calendario”</b>.
+          Nel menu a sinistra, sotto <b>“Impostazioni dei miei calendari”</b>, tocca il tuo calendario (di solito il tuo nome) e poi <b>“Integra calendario”</b>.
         </Step>
         <Step n={3}>
-          Copia l’<b>“Indirizzo segreto in formato iCal”</b> (finisce con <code className="rounded bg-stone-100 px-1 text-xs">basic.ics</code>) e incollalo qui sotto.
+          Copia l’<b>“Indirizzo segreto in formato iCal”</b> (sul telefono: tieni premuto sull’indirizzo → Copia; finisce con <code className="rounded bg-stone-100 px-1 text-xs">basic.ics</code>) e incollalo qui sotto.
         </Step>
       </ol>
 
