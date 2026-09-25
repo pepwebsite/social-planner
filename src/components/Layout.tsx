@@ -10,8 +10,9 @@ import { SessionBar } from './SessionBar'
 import { AccountBox } from './AuthGate'
 import { openTutorial } from './Tutorial'
 import { ThemeToggle } from './ThemeToggle'
-import { displayName, useAuth } from '../auth'
+import { useAuth } from '../auth'
 import { AppWordmark } from './AppLogo'
+import { UserAvatar } from './UserAvatar'
 
 const NAV = [
   { to: '/', label: 'Oggi', icon: Sun, end: true },
@@ -137,12 +138,12 @@ export function Layout() {
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Header mobile */}
         <header className="no-print sticky top-0 z-20 flex items-center gap-1 border-b border-stone-200/70 bg-surface/85 px-4 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 backdrop-blur-lg md:hidden">
-          <AppWordmark size={28} className="flex-1" />
+          <AppWordmark size={26} className="min-w-0 flex-1" />
           <ThemeToggle size="sm" className="mr-1" />
           <button type="button" aria-label="Cerca" onClick={() => setPalette(true)} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5">
             <Search size={20} />
           </button>
-          <button type="button" aria-label="Guarda il tutorial" onClick={openTutorial} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5">
+          <button type="button" aria-label="Guarda il tutorial" onClick={openTutorial} className="rounded-xl p-2.5 text-stone-500 active:bg-stone-900/5 max-[389px]:hidden">
             <CircleHelp size={20} />
           </button>
           <NavLink to="/impostazioni" aria-label="Impostazioni e account" className="ml-0.5">
@@ -213,9 +214,8 @@ function MobileTab({ n, badge }: { n: (typeof MOBILE_NAV)[number]; badge?: numbe
 
 function HeaderAvatar() {
   const user = useAuth((st) => st.user)
-  const name = user ? displayName(user) : null
-  return name ? (
-    <span className="flex size-9 items-center justify-center rounded-full bg-chip text-xs font-bold text-white">{name.slice(0, 1).toUpperCase()}</span>
+  return user ? (
+    <UserAvatar size={34} />
   ) : (
     <span className="flex size-9 items-center justify-center rounded-xl text-stone-500">
       <Settings size={20} />

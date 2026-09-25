@@ -15,6 +15,7 @@ import { openTutorial } from '../components/Tutorial'
 import { todayISO } from '../lib/dates'
 import { PageHeader } from '../components/Layout'
 import { Button, Card, cx } from '../components/ui'
+import { UserAvatar, openAvatarPicker } from '../components/UserAvatar'
 
 export function Settings() {
   const { importData, resetAll, loadDemo } = useStore.getState()
@@ -88,13 +89,14 @@ export function Settings() {
 
         {cloudEnabled && user && (
           <Card className="flex flex-wrap items-center gap-3 p-5">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-chip text-sm font-bold text-white">
-              {displayName(user).slice(0, 1).toUpperCase()}
-            </span>
+            <UserAvatar size={52} editable />
             <div className="min-w-0 flex-1">
               <p className="truncate font-bold">{displayName(user)}</p>
               <p className="truncate text-sm text-stone-500">{user.email}</p>
               <SyncBadge className="mt-0.5" />
+              <button type="button" onClick={openAvatarPicker} className="mt-1 block text-sm font-semibold text-brand-600 hover:underline">
+                Cambia personaggio
+              </button>
             </div>
             <Button variant="secondary" icon={<LogOut size={15} />} onClick={() => void signOutAndClear()}>
               Esci

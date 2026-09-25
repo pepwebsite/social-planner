@@ -5,6 +5,7 @@ import { useAuth } from '../auth'
 import { useUi } from '../ui'
 import { Button, Input, cx } from '../components/ui'
 import { AppLogo } from '../components/AppLogo'
+import { ANIMALS, AnimalTile, type AnimalId } from '../components/AnimalAvatars'
 
 type Mode = 'login' | 'register' | 'forgot'
 
@@ -77,7 +78,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         <p className="relative text-sm text-white/60">I tuoi dati sono salvati in modo sicuro e sincronizzati su tutti i tuoi dispositivi.</p>
       </div>
 
-      <div className="flex flex-1 flex-col lg:items-center lg:justify-center">
+      <div className="flex min-w-0 flex-1 flex-col lg:items-center lg:justify-center">
         {/* Intestazione su telefono */}
         <div className="relative overflow-clip bg-gradient-to-br from-brand-600 via-violet-600 to-fuchsia-600 px-6 pt-[max(28px,env(safe-area-inset-top))] pb-14 text-white lg:hidden">
           <div className="pointer-events-none absolute -top-16 -right-12 size-56 rounded-full bg-white/15 blur-2xl" />
@@ -91,7 +92,7 @@ export function AuthLayout({ children }: { children: ReactNode }) {
           <p className="relative mt-2 animate-rise text-[15px] text-white/85 [animation-delay:120ms]">Bozze con l’AI, calendari e promemoria in un’unica app.</p>
         </div>
         <div className="relative -mt-8 flex flex-1 justify-center rounded-t-[28px] bg-canvas px-5 pt-7 pb-10 lg:mt-0 lg:flex-none lg:rounded-none lg:bg-transparent lg:p-0">
-          <div className="w-full max-w-sm">{children}</div>
+          <div className="w-full min-w-0 max-w-sm">{children}</div>
         </div>
       </div>
     </div>
@@ -168,6 +169,7 @@ function RegisterForm({ onConfirmNeeded }: { onConfirmNeeded: (email: string) =>
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [animal, setAnimal] = useState<AnimalId>(() => ANIMALS[Math.floor(Math.random() * ANIMALS.length)].id)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const strong = password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password)
@@ -183,7 +185,7 @@ function RegisterForm({ onConfirmNeeded }: { onConfirmNeeded: (email: string) =>
     const { data, error } = await supabase!.auth.signUp({
       email: email.trim(),
       password,
-      options: { data: { full_name: name.trim() }, emailRedirectTo: window.location.origin },
+      options: { data: { full_name: name.trim(), avatar: animal }, emailRedirectTo: window.location.origin },
     })
     setBusy(false)
     if (error) return setError(authErrorMessage(error))
@@ -198,6 +200,23 @@ function RegisterForm({ onConfirmNeeded }: { onConfirmNeeded: (email: string) =>
       <div>
         <h2 className="text-2xl font-extrabold tracking-tight">Crea il tuo account</h2>
         <p className="mt-1 text-sm text-stone-500">Gratis. I tuoi dati restano tuoi e li ritrovi su ogni dispositivo.</p>
+      </div>
+      <div>
+        <span className="mb-1.5 block text-[13px] font-semibold text-stone-700">Il tuo personaggio</span>
+        <div className="-mx-1 flex w-[calc(100%+0.5rem)] gap-2 overflow-x-auto px-1 pt-1 pb-2 [&::-webkit-scrollbar]:hidden">
+          {ANIMALS.map((a) => (
+            <button
+              key={a.id}
+              type="button"
+              aria-label={a.name}
+              aria-pressed={animal === a.id}
+              onClick={() => setAnimal(a.id)}
+              className={cx('shrink-0 rounded-[28%] ring-offset-2 ring-offset-canvas transition active:scale-95', animal === a.id ? 'ring-3 ring-brand-500' : 'opacity-70 hover:opacity-100')}
+            >
+              <AnimalTile id={a.id} size={48} />
+            </button>
+          ))}
+        </div>
       </div>
       <Field icon={<UserRound size={16} />} label="Nome">
         <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" required autoFocus placeholder="Come ti chiami?" className="h-11 pl-9" />

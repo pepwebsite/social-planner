@@ -7,6 +7,7 @@ import { AuthScreen, ResetPassword } from '../pages/AuthScreen'
 import { Button, cx } from './ui'
 import { AppLogo } from './AppLogo'
 import { hideSplash } from '../lib/splash'
+import { UserAvatar } from './UserAvatar'
 
 function Splash({ text }: { text: string }) {
   return (
@@ -92,14 +93,9 @@ export function AccountBox() {
   const [busy, setBusy] = useState(false)
   if (!cloudEnabled || !user) return null
   const name = displayName(user)
-  const initials = name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase())
-    .join('')
   return (
     <div className="flex items-center gap-2.5 rounded-xl px-2 py-2">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-chip text-xs font-bold text-white">{initials}</span>
+      <UserAvatar size={36} editable />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-semibold">{name}</p>
         <SyncBadge />

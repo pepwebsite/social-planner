@@ -7,6 +7,9 @@ export type CvdPref = 'none' | 'protan' | 'deutan' | 'tritan' | 'achroma'
 interface PrefsState {
   theme: ThemePref
   cvd: CvdPref
+  /** Personaggio scelto quando non c'è un account (con l'account si salva lì) */
+  avatar: string | null
+  setAvatar: (a: string) => void
   setTheme: (t: ThemePref) => void
   setCvd: (c: CvdPref) => void
 }
@@ -17,6 +20,8 @@ export const usePrefs = create<PrefsState>()(
     (set) => ({
       theme: 'auto',
       cvd: 'none',
+      avatar: null,
+      setAvatar: (avatar) => set({ avatar }),
       setTheme: (theme) => set({ theme }),
       setCvd: (cvd) => set({ cvd }),
     }),

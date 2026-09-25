@@ -10,9 +10,9 @@ export function AppLogo({ size = 32, className }: { size?: number; className?: s
 /** Logo + nome */
 export function AppWordmark({ size = 32, light = false, className }: { size?: number; light?: boolean; className?: string }) {
   return (
-    <span className={cx('inline-flex items-center gap-2.5', className)}>
+    <span className={cx('inline-flex min-w-0 items-center gap-2.5', className)}>
       <AppLogo size={size} />
-      <span className={cx('leading-none font-extrabold tracking-tight', light ? 'text-white' : 'text-ink')} style={{ fontSize: size * 0.56 }}>
+      <span className={cx('min-w-0 truncate py-0.5 leading-none font-extrabold tracking-tight whitespace-nowrap', light ? 'text-white' : 'text-ink')} style={{ fontSize: size * 0.56 }}>
         Social{' '}
         <span className={light ? 'text-white/85' : 'bg-gradient-to-r from-[#8b5cf6] via-[#d946ef] to-[#fb7185] bg-clip-text text-transparent'}>Planner</span>
       </span>

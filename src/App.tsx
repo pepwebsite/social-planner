@@ -16,6 +16,7 @@ import { PrintPlan } from './pages/PrintPlan'
 import { Providers } from './pages/Providers'
 import { AuthGate } from './components/AuthGate'
 import { Tutorial } from './components/Tutorial'
+import { AvatarPicker } from './components/UserAvatar'
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
       <TaskEditor />
       <CommandPalette />
       <Tutorial />
+      <AvatarPicker />
       </AuthGate>
       <Toaster />
     </BrowserRouter>
