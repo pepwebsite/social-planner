@@ -8,7 +8,7 @@ import { capitalize, fmt, relativeDay } from '../lib/dates'
 import { daysWaiting } from '../lib/insights'
 import { generateCopy } from '../lib/ai'
 import { googleEventLink } from '../lib/calendarLinks'
-import { GoogleCalendarIcon } from './GoogleCalendarModal'
+import { GoogleCalendarIcon } from './GoogleCalendarIcon'
 import { Button, ClientAvatar, Drawer, Field, IconButton, Input, PlatformBadge, Select, Textarea, cx } from './ui'
 
 const QUICK_PROMPTS = ['Più breve', 'Più coinvolgente', 'Aggiungi una call to action', 'Adatta per una story', 'Meno emoji']

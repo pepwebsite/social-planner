@@ -5,7 +5,7 @@ import { uid, useStore } from '../store'
 import { useUi } from '../ui'
 import { todayISO } from '../lib/dates'
 import { googleEventLink } from '../lib/calendarLinks'
-import { GoogleCalendarIcon } from './GoogleCalendarModal'
+import { GoogleCalendarIcon } from './GoogleCalendarIcon'
 import { Button, Field, IconButton, Input, Modal, Select, Textarea } from './ui'
 
 export function EventEditor() {

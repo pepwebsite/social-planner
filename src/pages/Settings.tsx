@@ -16,6 +16,7 @@ import { todayISO } from '../lib/dates'
 import { PageHeader } from '../components/Layout'
 import { Button, Card, cx } from '../components/ui'
 import { UserAvatar, openAvatarPicker } from '../components/UserAvatar'
+import { GoogleCalendarIcon } from '../components/GoogleCalendarIcon'
 
 export function Settings() {
   const { importData, resetAll, loadDemo } = useStore.getState()
@@ -27,6 +28,7 @@ export function Settings() {
   }
   const toast = useUi((s) => s.toast)
   const user = useAuth((s) => s.user)
+  const gcalCount = useStore((s) => s.externalCalendars.length)
   const demoCount = useStore((s) => s.clients.filter(isDemoClient).length)
   const fileRef = useRef<HTMLInputElement>(null)
   const [ai, setAi] = useState<AiStatus | null>(null)
@@ -62,6 +64,19 @@ export function Settings() {
     <div className="mx-auto max-w-3xl pb-10">
       <PageHeader title="Impostazioni e backup" />
       <div className="space-y-4 px-4 md:px-8">
+        <Link to="/impostazioni/google-calendar" className="block rounded-2xl bg-surface p-5 shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-px hover:shadow-lift">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-stone-50 ring-1 ring-stone-900/5">
+              <GoogleCalendarIcon size={24} />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-bold">Google Calendar</p>
+              <p className="text-sm text-stone-500">{gcalCount ? `${gcalCount} ${gcalCount === 1 ? 'calendario collegato' : 'calendari collegati'}` : 'Collega il calendario del telefono'}</p>
+            </div>
+            <ChevronRight size={18} className="shrink-0 text-stone-400" />
+          </div>
+        </Link>
+
         <Link to="/impostazioni/ai" className="block rounded-2xl bg-surface p-5 shadow-soft ring-1 ring-stone-900/5 transition hover:-translate-y-px hover:shadow-lift">
           <div className="flex items-center gap-3">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-brand-600 text-white">

@@ -9,7 +9,7 @@ import { capitalize, fmt, todayISO, toISO, weekDays, weekLabel, weekStart } from
 import { FORMAT_LABEL, STATUSES, STATUS_META, WEEKDAYS_SHORT } from '../lib/meta'
 import { slotsForWeek, slotCovered, type SlotInstance } from '../lib/insights'
 import { PageHeader, QuickCreate } from '../components/Layout'
-import { GoogleCalendarIcon, GoogleCalendarModal } from '../components/GoogleCalendarModal'
+import { GoogleCalendarIcon } from '../components/GoogleCalendarIcon'
 import { useExternalItems, type ExternalEntry } from '../lib/calendarLinks'
 import { PostCard } from '../components/PostCard'
 import { ClientAvatar, EmptyState, IconButton, PlatformBadge, Select, cx } from '../components/ui'
@@ -50,7 +50,6 @@ export function CalendarPage() {
   const allClients = useStore((s) => s.clients)
   const posts = useStore((s) => s.posts)
   const events = useStore((s) => s.events)
-  const [gcal, setGcal] = useState(false)
   const { items: external, errors: extErrors } = useExternalItems()
 
   const setView = (v: View) => {
@@ -112,19 +111,8 @@ export function CalendarPage() {
   return (
     <div className="pb-10">
       <PageHeader title="Calendario" subtitle="Tutti i clienti, nel formato che preferisci." actions={
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setGcal(true)}
-              title="Collega Google Calendar"
-              className="inline-flex h-10 items-center gap-2 rounded-xl bg-surface px-3 text-sm font-semibold text-stone-700 shadow-soft ring-1 ring-stone-900/5 transition hover:bg-stone-50"
-            >
-              <GoogleCalendarIcon size={20} />
-              Google Calendar
-            </button>
-            <div className="hidden md:block">
-              <QuickCreate />
-            </div>
+          <div className="hidden md:block">
+            <QuickCreate />
           </div>
         } />
 
@@ -202,7 +190,6 @@ export function CalendarPage() {
           Non riesco a leggere «{calendars.find((c) => c.id === id)?.name ?? 'Google Calendar'}»: {msg}
         </p>
       ))}
-      {gcal && <GoogleCalendarModal onClose={() => setGcal(false)} />}
 
       <div className="px-4 md:px-8">
         {clients.length === 0 ? (

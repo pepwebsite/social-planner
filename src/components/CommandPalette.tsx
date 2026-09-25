@@ -65,6 +65,7 @@ function Palette({ onClose }: { onClose: () => void }) {
       { id: 'g-pipe', label: 'Approvazioni', icon: <KanbanSquare size={16} />, run: go('/approvazioni'), group: 'Vai a' },
       { id: 'g-tasks', label: 'Attività', icon: <ListTodo size={16} />, run: go('/attivita'), group: 'Vai a' },
       { id: 'g-clients', label: 'Tutti i clienti', icon: <Users size={16} />, run: go('/clienti'), group: 'Vai a' },
+      { id: 'g-gcal', label: 'Google Calendar', hint: 'collega il calendario', icon: <CalendarDays size={16} />, run: go('/impostazioni/google-calendar'), group: 'Vai a' },
       { id: 'g-ai', label: 'Provider AI', hint: 'chiavi e modelli', icon: <Sparkles size={16} />, run: go('/impostazioni/ai'), group: 'Vai a' },
     ]
     if (q.trim().length >= 2) {

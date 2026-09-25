@@ -17,6 +17,7 @@ import { Providers } from './pages/Providers'
 import { AuthGate } from './components/AuthGate'
 import { Tutorial } from './components/Tutorial'
 import { AvatarPicker } from './components/UserAvatar'
+import { GoogleCalendarPage } from './pages/GoogleCalendarPage'
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="clienti/:id" element={<ClientWorkspace />} />
           <Route path="impostazioni" element={<Settings />} />
           <Route path="impostazioni/ai" element={<Providers />} />
+          <Route path="impostazioni/google-calendar" element={<GoogleCalendarPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
